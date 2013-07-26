@@ -6,7 +6,7 @@
   <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
   on iOS devices-->
   <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-  <title>Layer in a map service - [ON-DEMAND]</title>
+  <title>Oil and Gas Viewer</title>
 
   <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css">
   <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css" />
@@ -56,13 +56,13 @@
     dojo.require("dijit.layout.BorderContainer");
     dojo.require("dijit.layout.ContentPane");
 	dojo.require("esri.dijit.OverviewMap");
-    
+	//dojo.require("dgrid.OnDemandGrid");
+    dojo.require("dojo.store.Memory");
 	
-	
-    
-    var selectionToolbar;
+	//var grid;
 
     function init() {
+	
       var map = new esri.Map("map", { 
         basemap: "topo",
         center: [-111.3877, 34.5],
@@ -75,7 +75,9 @@
          // map.on("mouse-drag", showCoordinates);
 
         });
-	  
+		
+	
+
 	  var scalebar = new esri.dijit.Scalebar({
           map: map,
           scalebarUnit: "english"
@@ -129,15 +131,13 @@
         outFields: ["*"]
       });
 	  
-    //Controls what the select and clear buttons do
+    
       wellFeatureLayer.setDefinitionExpression("welltype='O&Gexplor'");
-      wellFeatureLayer.setSelectionSymbol(fieldsSelectionSymbol);
-     /* dojo.connect(wellFeatureLayer, "onSelectionComplete", updateGrid);
-      dojo.connect(wellFeatureLayer, "onSelectionClear", function(features) {
-        dojo.byId('messages').innerHTML = "<i>No Selected Fields</i>";
-		window.alert("Here");
-      }); */
 	  
+	  
+	  //Controls what the select and clear buttons do
+	  wellFeatureLayer.setSelectionSymbol(fieldsSelectionSymbol);
+     
 	  //add the legend
       dojo.connect(map, 'onLayersAddResult', function (results) {
         var layerInfo = dojo.map(results, function (layer, index) {
@@ -186,16 +186,33 @@
 			
     }
 	
+	function updateGrid(featureSet){
+		var data=[];
+		var grid = dijit.byId('grid');
+		dojo.forEach(featureSet, function (entry) {
+			data.push({
+				id:entry.attributes.objectid,
+				apino:entry.attributes.apino,
+				depth:entry.attributes.drillertotaldepth,
+				wellname:entry.attributes.wellname				
+			});
+		});
+		var store = new dojo.data.ItemFileReadStore(data[0]);
+		//var grid = digit.byId('grid');
+		grid.setStore(store);
+	//	grid.refresh();
+	}
 	
+	/*
 	function updateGrid(featureSet){
 		//window.alert("Pick me.");
 		var dataForGrid = [];
 		dojo.forEach(featureSet, function (feature) {
-			dataForGrid.push([feature.OBJECTID,feature.apino,feature.drillertotaldepth,feature.wellname])
-			  id:entry.attributes.objectid,
-			  apino:entry.attributes.apino,
-			  depth:entry.attributes.drillertotaldepth,
-			  wellname:entry.attributes.wellname
+			dataForGrid.push({feature.OBJECTID,feature.apino,feature.drillertotaldepth,feature.wellname})
+			 // id:entry.attributes.objectid,
+			//  apino:entry.attributes.apino,
+			 // depth:entry.attributes.drillertotaldepth,
+			//  wellname:entry.attributes.wellname
 			 
 			// });
 		    });
@@ -211,6 +228,7 @@
 		//grid.refresh();
 		//grid.setQuery({ OBJECTID: '*' });
 		};
+	*/
 		
         
     //function findWells(evt) {
