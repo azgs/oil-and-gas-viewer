@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Text Search</title>
+<style type="text/css">
+body {
+border:5px solid black;
+background-color:#F4A460;
+height:600px;
+}
+#meridians{
+float:right;
+}
+form {
+margin-top:5px;
+margin-left:5px;
+border:2px soild black;
+}
+</style>
+</head>
+<body>
+<image id="meridians" src="photos/Arizona_Meridians.jpg">
+<form method="post" action="">
+<table>
+<tr>
+<td class="label">
+<label for="apino">API Number</label>
+</td>
+<td>
+<input type="text" name="apino" size="14" maxlength="14"><br>
+</td>
+<td class="label">
+<label for="Permit_Number"> State Permit Number</label>
+</td>
+<td>
+<input type="text" name="Permit_Number" size="4" maxlength="4"><br>
+</td>
+
+</tr>
+<tr>
+<td class="label">
+<label for="State_County">County</label>
+</td>
+<td>
+<select name="County" id="State_County">
+<option value="county">Apache</option>
+<option value="county">Cochise</option>
+<option value="county">Coconino</option>
+<option value="county">Gila</option>
+<option value="county">Graham</option>
+<option value="county">Greenlee</option>
+<option value="county">La Paz</option>
+<option value="county">Maricopa</option>
+<option value="county">Mohave</option>
+<option value="county">Navajo</option>
+<option value="county">Pima</option>
+<option value="county">Pinal</option>
+<option value="county">Santa Cruz</option>
+<option value="county">Yavapai</option>
+<option value="county">Yuma</option>
+</select>
+</td>
+<td class="label">
+<label for="field">Field Name</label>
+</td>
+<td>
+<input type="text" name="field" size="20" maxlength="20"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="Township">Township</label>
+</td>
+<td>
+<input type="text" name="Township" size="4" maxlength="4"><br>
+</td>
+<td class="label">
+<label for="Range">Range</label>
+</td>
+<td>
+<input type="text" name="Range" size="4" maxlength="4"><br>
+</td>
+<td class="label">
+<label for="Township_Section">Section</label>
+</td>
+<td>
+<select name="Section" id="Township_Section">
+<option value="section">1</option>
+<option value="section">2</option>
+<option value="section">3</option>
+<option value="section">4</option>
+<option value="section">5</option>
+<option value="section">6</option>
+<option value="section">7</option>
+<option value="section">8</option>
+<option value="section">9</option>
+<option value="section">10</option>
+<option value="section">11</option>
+<option value="section">12</option>
+<option value="section">13</option>
+<option value="section">14</option>
+<option value="section">15</option>
+<option value="section">16</option>
+<option value="section">17</option>
+<option value="section">18</option>
+<option value="section">19</option>
+<option value="section">20</option>
+<option value="section">21</option>
+<option value="section">22</option>
+<option value="section">23</option>
+<option value="section">24</option>
+<option value="section">25</option>
+<option value="section">26</option>
+<option value="section">27</option>
+<option value="section">28</option>
+<option value="section">29</option>
+<option value="section">30</option>
+<option value="section">31</option>
+<option value="section">32</option>
+<option value="section">33</option>
+<option value="section">34</option>
+<option value="section">35</option>
+<option value="section">36</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>
+<label for="operator">Operator</label>
+</td>
+<td>
+<input type="text" name="operator" size="20" maxlength="20"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="wellname">Well Name</label>
+</td>
+<td>
+<input type="text" name="wellname" size="20" maxlength="20"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="welltype">Well Type</label>
+</td>
+<td>
+<input type="text" name="welltype" size="20" maxlength="20"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="status">Well Status</label>
+</td>
+<td>
+<input type="text" name="status" size="20" maxlength="20"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="formationtd">Formation at Total Depth</label>
+</td>
+<td>
+<input type="text" name="formationtd" size="20" maxlength="20"><br>
+</td>
+</tr>
+<tr>
+<td>
+<input type="submit" value="Submit Search"/>
+</td>
+<td>
+<input type="reset" value="Reset Search"/>
+</td>
+</tr>
+</table>
+</form>
+
+</body>
+</html>
