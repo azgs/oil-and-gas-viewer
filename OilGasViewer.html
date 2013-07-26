@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9, IE=10">
+  <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
+  on iOS devices-->
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+  <title>Layer in a map service - [ON-DEMAND]</title>
+
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css">
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css" />
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/tundra/tundra.css"> 
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dojox/grid/resources/Grid.css">     
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dojox/grid/resources/tundraGrid.css"> 
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css">
+ <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_pbm0lsQQJ7A7WCCIMgxLho6mI_kBNgznNUWmTWcnfoE.css" media="all" />
+ <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_lywdrXysQ4P-qq1X4UHOysGzCh3sY0iKbjWgR5XEKTE.css" media="all" />
+ <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_kKWVoh6LKHSOxBh_dVKdRCBpUARTX9RZG8ojal_Kyck.css" media="all" /> 
+ <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_VFG-WGr9eSVwnsjvKFtAVu65PscGVgPgL6gnn7iNBHY.css" media="all" />  
+  <style>
+    html, body {
+      height: 92%;
+      width: 98%;
+      margin: 1%;
+    }
+
+    #rightPane {
+      width: 20%;
+    }
+	
+	#lefttPane {
+      width: 15%;
+    }
+
+	#bottomPane {
+	  height: 200px;
+    }
+	
+    #legendPane {
+      border: solid #F3E6D0 2px;
+    }
+  </style>  
+  
+  <script>var dojoConfig = { parseOnLoad:true };</script>
+  <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+  <script>
+    dojo.require("esri.map");
+	dojo.require("esri.tasks.query");
+	dojo.require("esri.dijit.Legend");
+	dojo.require("esri.dijit.Scalebar");
+	dojo.require("esri.toolbars.draw");
+    dojo.require("esri.layers.FeatureLayer");
+    dojo.require("dojox.grid.DataGrid");
+    dojo.require("dojo.data.ItemFileReadStore");
+    dojo.require("dijit.layout.BorderContainer");
+    dojo.require("dijit.layout.ContentPane");
+	dojo.require("esri.dijit.OverviewMap");
+    
+	
+	
+    
+    var selectionToolbar;
+
+    function init() {
+      var map = new esri.Map("map", { 
+        basemap: "topo",
+        center: [-111.3877, 34.5],
+        zoom: 7
+      });
+      //Mouse listener for coords
+	  map.on("load", function(){
+          //after map loads, connect to listen to mouse move & drag events
+          map.on("mouse-move", showCoordinates);
+         // map.on("mouse-drag", showCoordinates);
+
+        });
+	  
+	  var scalebar = new esri.dijit.Scalebar({
+          map: map,
+          scalebarUnit: "english"
+        }, dojo.byId("scalebar"));
+
+		//Overview Map
+      map.on("load", function(){
+          //add the overview map 
+          var overviewMapDijit = new esri.dijit.OverviewMap({
+            map: map,
+            visible: false
+          });
+          overviewMapDijit.startup();
+        });
+	  
+      var fieldsSelectionSymbol = new esri.symbol.SimpleMarkerSymbol().setColor("red");
+
+      //Popup window settings
+      var content = "<b>API Number</b>: ${apino}"  +
+					"<br><b>State Permit Number</b>: ${otherid}"  +
+					"<br><b>Operator</b>: ${operator}" +
+					"<br><b>County</b>: ${county}" +
+					"<br><b>Township-Range, Section </b>: T${twp}-R${rge}, Sec. ${section_}" +
+					"<br><b>Total Depth</b>: ${drillertotaldepth} ft" +
+					"<br><b>Formation</b>: ${formationtd}" +
+					"<br><b>Download Well Folders </b>: <a href=\"${headeruri}\"> PDF </a>" +
+					"<br><b>Download Scanned Well Logs </b>: <a href=\"${headeruri}\"> TIFF </a>" +
+					"<br><b>Download LAS Data</b>: <a href=\"${headeruri}\"> LAS </a>";						
+      var infoTemplate = new esri.InfoTemplate("Well Info", content);
+	  
+      
+	 // https://my.usgs.gov/arcgis/rest/services/crcwc/crcwc/MapServer/5
+	  var sect = new esri.layers.FeatureLayer("http://services.azgs.az.gov/ArcGIS/rest/services/baselayers/ArizonaPLSS/MapServer/13", {
+        mode:  esri.layers.FeatureLayer.MODE_ONDEMAND,
+        outFields:["*"]
+      });	
+	  
+	  /*var sectLabels = new esri.layers.FeatureLayer("http://services.azgs.az.gov/ArcGIS/rest/services/baselayers/ArizonaPLSS/MapServer/10", {
+        mode:  esri.layers.FeatureLayer.MODE_ONDEMAND,
+        outFields:["*"]
+      });*/
+	  
+	  var tShips = new esri.layers.FeatureLayer("https://my.usgs.gov/arcgis/rest/services/crcwc/crcwc/MapServer/4", {
+        mode:  esri.layers.FeatureLayer.MODE_ONDEMAND,
+        outFields:["*"]
+      });
+	  
+	  wellFeatureLayer = new esri.layers.FeatureLayer("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0",{
+        mode: esri.layers.FeatureLayer.MODE_ONDEMAND, //data on demand
+        infoTemplate: infoTemplate,
+        outFields: ["*"]
+      });
+	  
+    //Controls what the select and clear buttons do
+      wellFeatureLayer.setDefinitionExpression("welltype='O&Gexplor'");
+      wellFeatureLayer.setSelectionSymbol(fieldsSelectionSymbol);
+     /* dojo.connect(wellFeatureLayer, "onSelectionComplete", updateGrid);
+      dojo.connect(wellFeatureLayer, "onSelectionClear", function(features) {
+        dojo.byId('messages').innerHTML = "<i>No Selected Fields</i>";
+		window.alert("Here");
+      }); */
+	  
+	  //add the legend
+      dojo.connect(map, 'onLayersAddResult', function (results) {
+        var layerInfo = dojo.map(results, function (layer, index) {
+          return {layer:layer.layer, title:layer.layer.name};
+        });
+        if (layerInfo.length > 0) {
+          var legendDijit = new esri.dijit.Legend({
+            map :map,
+            layerInfos:layerInfo
+          }, "legendDiv");
+          legendDijit.startup();
+        }
+      });
+	  
+      map.addLayers([tShips, sect, wellFeatureLayer]);
+	  
+	  dojo.connect(map, "onLoad", initSelectToolbar);
+    }
+	//Pointer Coordinates
+	function showCoordinates(evt) {
+        console.log("show");
+        //get mapPoint from event
+        //The map is in web mercator - modify the map point to display the results in geographic
+        var mp = esri.geometry.webMercatorToGeographic(evt.mapPoint);
+        //display mouse coordinates
+        dojo.byId("info").innerHTML ="Cursor Coordinates:<br>" + "Long. " + mp.x.toFixed(3) + ", " + "Lat. " + mp.y.toFixed(3);
+      }
+	
+	//Listens for selection box and initializes the buttons
+    function initSelectToolbar(map) {
+      selectionToolbar = new esri.toolbars.Draw(map); //creates toolbar
+      var selectQuery = new esri.tasks.Query();
+	  
+	  
+      //Selects data once box is drawn
+      dojo.connect(selectionToolbar, "onDrawEnd", function(geometry) {
+        selectionToolbar.deactivate();
+        selectQuery.geometry = geometry;
+		
+        wellFeatureLayer.selectFeatures(selectQuery, esri.layers.FeatureLayer.SELECTION_NEW, function (featureSet) {
+			updateGrid(featureSet);
+		//window.alert("Me!");
+		});
+		
+		});
+			
+    }
+	
+	
+	function updateGrid(featureSet){
+		//window.alert("Pick me.");
+		var dataForGrid = [];
+		dojo.forEach(featureSet, function (feature) {
+			dataForGrid.push([feature.OBJECTID,feature.apino,feature.drillertotaldepth,feature.wellname])
+			  id:entry.attributes.objectid,
+			  apino:entry.attributes.apino,
+			  depth:entry.attributes.drillertotaldepth,
+			  wellname:entry.attributes.wellname
+			 
+			// });
+		    });
+		var data = {
+			//identifier: "OBJECTID",
+			//label: "objectid",
+			items:dataForGrid
+			};
+			
+		var store = new dojo.data.ItemFileReadStore({data:data});
+		//var grid = digit.byId('grid');
+		grid.setStore(store);
+		//grid.refresh();
+		//grid.setQuery({ OBJECTID: '*' });
+		};
+		
+        
+    //function findWells(evt) {
+      //  grid.setStore(null);
+      //  var selectionQuery = new esri.tasks.Query();
+      //  var tol = map.extent.getWidth()/map.width * 5;
+      //  var x = evt.mapPoint.x;
+      //  var y = evt.mapPoint.y;
+      //  var queryExtent = new esri.geometry.Extent(x-tol,y-tol,x+tol,y+tol,evt.mapPoint.spatialReference);
+      //  selectionQuery.geometry = queryExtent;
+      //  featureLayer.selectFeatures(selectionQuery,esri.layers.FeatureLayer.SELECTION_NEW);
+    //  }
+
+    dojo.ready(init);
+  </script>
+
+</head>
+
+<body class="tundra">
+
+
+ <div id="page" class="container">
+
+  <header id="header" class="clearfix">
+    <div id="branding">
+              <div id="logo"><a href="/" rel="home" title="Home page" class="active"><img src="http://azogcc.az.gov/sites/azogcc.az.gov/files/AZ_state_seal.png" alt="Arizona Oil and Gas Conservation Commission logo"/></a></div>
+                    <hgroup>
+                      <h1 id="site-name"><a href="/" rel="home" title="Home page" class="active">Arizona Oil and Gas Conservation Commission</a></h1>
+                            </hgroup>
+          </div>
+      <div class="region region-header">
+    <div id="block-search-form" class="block block-search block-odd block-count-1 block-region-header" role="search">
+  <div class="block-inner clearfix">
+                <div class="block-content">
+      <form action="/" method="post" id="search-block-form" accept-charset="UTF-8"><div><div class="container-inline">
+      <h2 class="element-invisible">Search form</h2>
+    <div class="form-item form-type-textfield form-item-search-block-form">
+  <label class="element-invisible" for="edit-search-block-form--2">Search </label>
+ <input title="Enter the terms you wish to search for." type="search" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" class="form-text" />
+</div>
+<div class="form-actions form-wrapper" id="edit-actions"><span class="button edit-submit"><input type="submit" name="op" id="edit-submit" value="Search"  class="form-submit" /></span>
+</div><input type="hidden" name="form_build_id" value="form-vWABV1ke1wrsX3MazKcDjDbbpkIx_EQjTVV9zA0Z5zE" />
+<input type="hidden" name="form_id" value="search_block_form" />
+</div>
+</div></form>    </div>
+  </div>
+</div>
+  </div>
+ <!-- /header region -->
+      <div id="menu-bar" class="nav">
+      <nav id="block-system-main-menu" class="block block-system block-menu block-odd block-count-2 block-region-menu-bar block-menu" role="navigation">
+              <h2 class="block-title element-invisible">Main menu</h2>
+            <div class="menu-wrapper"><ul class="menu clearfix"><li class="first leaf menu-item-198"><a href="/" class="active">Home</a></li><li class="leaf menu-item-398"><a href="/publications">Publications</a></li><li class="leaf menu-item-408"><a href="/permits">Permits</a></li><li class="leaf menu-item-437"><a href="/production_reports">Production Reports</a></li><li class="leaf menu-item-410"><a href="/forms">Forms</a></li><li class="leaf menu-item-926"><a href="/meetings">Meetings</a></li><li class="leaf menu-item-409"><a href="/links">Links</a></li><li class="leaf menu-item-396"><a href="/faqs/questions" title="">FAQs</a></li><li class="last leaf menu-item-397"><a href="/contact" title="">Contact/Location</a></li></ul></div>
+  </nav>
+  </div>
+ <!-- /menu bar -->
+  </header>
+  </div>
+
+<div id="content"
+     data-dojo-type="dijit.layout.BorderContainer"
+     data-dojo-props="design:'headline', gutters:true"
+     style="width: 100%; height: 100%; margin: 0;">
+  <div id="map"
+       data-dojo-type="dijit.layout.ContentPane"
+       data-dojo-props="region:'center'"
+       style="overflow:hidden;">
+  </div>
+  
+  <div id="lefttPane"
+	   data-dojo-type="dijit.layout.ContentPane"
+	   data-dojo-props="region:'left'">
+	   <span id="info" style="position:absolute; left:15px; bottom:2%; color:#000; z-index:50;"></span>
+	   <!--<div id="scalebar" style="position:relative; left:1%; bottom:-95%;"></div>-->
+	   
+	<div id="buttons">
+		<p>
+							Map Search: Hold shift to draw a box with the mouse around the area of interest.<br>
+							Map View: Click the Satellite, Streets or Topo button to change the map.<br>
+							Map Navigation: Use the mouse wheel to zoom in and out. Click and hold to pan.<br>
+							Click the Search button to get the report of all Cores and Cuttings visible on the map.
+							</p>
+		<button data-dojo-type="dijit.form.Button" onClick="selectionToolbar.activate(esri.toolbars.Draw.EXTENT);">Select Wells</button>
+		<button data-dojo-type="dijit.form.Button" onClick="wellFeatureLayer.clearSelection();">Clear Selection</button><br>
+	</div>
+	
+		
+	
+    <div data-dojo-type="dijit.layout.ContentPane" id="legendPane"
+         data-dojo-props="title:'Legend', selected:true">
+      <div id="legendDiv"></div>
+	  
+    </div>
+     
+	
+    
+  </div>
+  
+  
+  <div id="bottomPane"
+       data-dojo-type="dijit.layout.ContentPane"
+       data-dojo-props="region:'bottom'">
+	   <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
+    <table data-dojo-type="dojox.grid.DataGrid" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%"> 
+          <thead> 
+            <tr> 
+              <th field="OBJECTID" width="auto">ID</th> 
+              <th field="apino" width="auto">API No</th> 
+              <th field="drillertotaldepth" width="auto">Depth</th> 
+              <th field="wellname" width="auto">WELL NAME</th> 
+            </tr> 
+          </thead> 
+        </table> 
+
+  </div>
+
+</div>
+
+
+
+
+<!--<button data-dojo-type="dijit.form.Button" onClick="selectionToolbar.activate(esri.toolbars.Draw.EXTENT);">Select Fields</button>
+  <button data-dojo-type="dijit.form.Button" onClick="featureLayer.clearSelection();">Clear Selection</button><br>
+
+  <div id="map" style="position: relative; width:68%; height:90%; border:1px solid #000;"></div>
+
+  <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'right'" style="width:38%;margin:5px;background-color:whitesmoke;"> 
+        <table data-dojo-type="dojox.grid.DataGrid" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:300px; width:300px"> 
+          <thead> 
+            <tr> 
+              <th field="OBJECTID" width="auto">ID</th> 
+              <th field="APINo" width="auto">API No</th> 
+              <th field="ELEVATION" width="auto">ELEVATION</th> 
+              <th field="FormationTD" width="auto">FORMATION</th> 
+            </tr> 
+          </thead> 
+        </table> 
+      </div>-->
+  <span id="messages"></span>
+  
+</body>
+</html>
