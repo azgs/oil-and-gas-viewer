@@ -158,7 +158,7 @@
     }
 	//Pointer Coordinates
 	function showCoordinates(evt) {
-        console.log("show");
+        //console.log("show");
         //get mapPoint from event
         //The map is in web mercator - modify the map point to display the results in geographic
         var mp = esri.geometry.webMercatorToGeographic(evt.mapPoint);
@@ -196,17 +196,23 @@
 				depth:entry.attributes.drillertotaldepth,
 				wellname:entry.attributes.wellname				
 			});
+			
 		});
-		var store = new dojo.data.ItemFileReadStore(data[0]);
+		var dataForGrid= {
+			items: data
+			};
+			
+		var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
 		//var grid = digit.byId('grid');
+		console.log(store);
 		grid.setStore(store);
-	//	grid.refresh();
+		//grid.refresh();
 	}
 	
 	/*
 	function updateGrid(featureSet){
 		//window.alert("Pick me.");
-		var dataForGrid = [];
+		var dataForGrid = {};
 		dojo.forEach(featureSet, function (feature) {
 			dataForGrid.push({feature.OBJECTID,feature.apino,feature.drillertotaldepth,feature.wellname})
 			 // id:entry.attributes.objectid,
@@ -228,8 +234,8 @@
 		//grid.refresh();
 		//grid.setQuery({ OBJECTID: '*' });
 		};
-	*/
-		
+	
+		*/
         
     //function findWells(evt) {
       //  grid.setStore(null);
