@@ -191,9 +191,17 @@
 		var grid = dijit.byId('grid');
 		dojo.forEach(featureSet, function (entry) {
 			data.push({
-				id:entry.attributes.objectid,
+				objectid:entry.attributes.objectid,
 				apino:entry.attributes.apino,
-				depth:entry.attributes.drillertotaldepth,
+				otherid:entry.attributes.otherid,
+				operator:entry.attributes.operator,
+				county:entry.attributes.county,
+				twp:entry.attributes.twp,
+				rge:entry.attributes.rge,
+				headeruri:entry.attributes.headeruri,
+				section_:entry.attributes.section_,
+				drillertotaldepth:entry.attributes.drillertotaldepth,
+				formationtd:entry.attributes.formationtd,
 				wellname:entry.attributes.wellname				
 			});
 			
@@ -204,7 +212,7 @@
 			
 		var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
 		//var grid = digit.byId('grid');
-		console.log(store);
+		//console.log(store);
 		grid.setStore(store);
 		//grid.refresh();
 	}
@@ -340,11 +348,19 @@
 	   <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
     <table data-dojo-type="dojox.grid.DataGrid" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%"> 
           <thead> 
-            <tr> 
-              <th field="OBJECTID" width="auto">ID</th> 
-              <th field="apino" width="auto">API No</th> 
-              <th field="drillertotaldepth" width="auto">Depth</th> 
-              <th field="wellname" width="auto">WELL NAME</th> 
+            <tr>
+              <th field="apino" width="auto">API No</th>
+			  <th field="otherid" width="auto">State Permit No</th>
+			  <th field="operator" width="auto">Operator</th>
+			  <th field="county" width="auto">County</th>
+			  <th field="twp" width="auto">Township</th>
+			  <th field="rge" width="auto">Range</th>
+			  <th field="section_" width="auto">Section</th>
+              <th field="drillertotaldepth" width="auto">Depth (ft)</th>
+			  <th field="formationtd" width="auto">Formation at Depth</th>
+              <th field="headeruri" width="auto">Well Folder</th>
+			  <th field="wellname" width="auto">Scanned Well Log</th>
+			  <th field="wellname" width="auto">LAS Data</th>
             </tr> 
           </thead> 
         </table> 
