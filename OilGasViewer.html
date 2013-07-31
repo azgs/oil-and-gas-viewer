@@ -17,7 +17,8 @@
  <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_pbm0lsQQJ7A7WCCIMgxLho6mI_kBNgznNUWmTWcnfoE.css" media="all" />
  <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_lywdrXysQ4P-qq1X4UHOysGzCh3sY0iKbjWgR5XEKTE.css" media="all" />
  <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_kKWVoh6LKHSOxBh_dVKdRCBpUARTX9RZG8ojal_Kyck.css" media="all" /> 
- <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_VFG-WGr9eSVwnsjvKFtAVu65PscGVgPgL6gnn7iNBHY.css" media="all" />  
+ <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_VFG-WGr9eSVwnsjvKFtAVu65PscGVgPgL6gnn7iNBHY.css" media="all" /> 
+ 
   <style>
     html, body {
       height: 92%;
@@ -186,24 +187,44 @@
 			
     }
 	
+	function folderFormatter(x) {
+		//x is the value
+		var link = '<a href=" + x[7] + " target="_blank">Well Folder</a>';
+		return link;
+	}
+
+	function logFormatter(x) {
+		//x is the value
+		var link = '<a href=" + x[7] + " target="_blank">Well Log</a>';
+		return link;
+	}
+
+	function lasFormatter(x) {
+		//x is the value
+		var link = '<a href=" + x[7] + " target="_blank">LAS Data</a>';
+		return link;
+	}
+	
 	function updateGrid(featureSet){
+	
 		var data=[];
 		var grid = dijit.byId('grid');
 		dojo.forEach(featureSet, function (entry) {
 			data.push({
-				objectid:entry.attributes.objectid,
-				apino:entry.attributes.apino,
-				otherid:entry.attributes.otherid,
-				operator:entry.attributes.operator,
-				county:entry.attributes.county,
-				twp:entry.attributes.twp,
-				rge:entry.attributes.rge,
-				headeruri:entry.attributes.headeruri,
-				section_:entry.attributes.section_,
-				drillertotaldepth:entry.attributes.drillertotaldepth,
-				formationtd:entry.attributes.formationtd,
-				wellname:entry.attributes.wellname				
+				objectid:entry.attributes.objectid,//0
+				apino:entry.attributes.apino,//1
+				otherid:entry.attributes.otherid,//2
+				operator:entry.attributes.operator,//3
+				county:entry.attributes.county,//4
+				twp:entry.attributes.twp,//5
+				rge:entry.attributes.rge,//6
+				headeruri:entry.attributes.headeruri,//7
+				section_:entry.attributes.section_,//8
+				drillertotaldepth:entry.attributes.drillertotaldepth,//9
+				formationtd:entry.attributes.formationtd,//10
+				wellname:entry.attributes.wellname//11
 			});
+			
 			
 		});
 		var dataForGrid= {
@@ -346,21 +367,21 @@
        data-dojo-type="dijit.layout.ContentPane"
        data-dojo-props="region:'bottom'">
 	   <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
-    <table data-dojo-type="dojox.grid.DataGrid" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%"> 
+    <table data-dojo-type="dojox.grid.DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%"> 
           <thead> 
             <tr>
-              <th field="apino" width="auto">API No</th>
+			  <th field="apino" width="auto">API No</th>
 			  <th field="otherid" width="auto">State Permit No</th>
 			  <th field="operator" width="auto">Operator</th>
 			  <th field="county" width="auto">County</th>
 			  <th field="twp" width="auto">Township</th>
 			  <th field="rge" width="auto">Range</th>
 			  <th field="section_" width="auto">Section</th>
-              <th field="drillertotaldepth" width="auto">Depth (ft)</th>
+			  <th field="drillertotaldepth" width="auto">Depth (ft)</th>
 			  <th field="formationtd" width="auto">Formation at Depth</th>
-              <th field="headeruri" width="auto">Well Folder</th>
-			  <th field="wellname" width="auto">Scanned Well Log</th>
-			  <th field="wellname" width="auto">LAS Data</th>
+			  <th field="headeruri" width="auto" formatter="folderFormatter">Well Folder</th>
+			  <th field="headeruri" width="auto" formatter="logFormatter">Scanned Well Log</th>
+			  <th field="headeruri" width="auto" formatter="lasFormatter">LAS Data</th>
             </tr> 
           </thead> 
         </table> 
