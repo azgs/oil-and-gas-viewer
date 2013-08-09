@@ -205,8 +205,25 @@
 		var data=[];
 		var grid = dijit.byId('grid');
 		dojo.forEach(featureSet, function (entry) {
-			//var relResource = entry.atttributes.relatedresource;
-			//var parts = relResource.split(" | ");
+			var logs = [], 
+				las = [], 
+				folders = [];
+			var raw = entry.attributes.relatedresource.split("|");
+			raw.forEach(function (bit){
+				var resource = bit.split(", ");
+				var url = resource[1].trim();
+				var name = resource[0].trim();
+				var anchor = "<li><a href='" + url + "' target='_blank'>" + name + "</a></li>";
+				if ( url.indexOf(".tif", url.length -4) !==-1){
+					logs.push(anchor);
+				}
+				if ( url.indexOf(".pdf", url.length -4) !==-1){
+					folders.push(anchor);
+				} 
+				if ( url.indexOf(".las", url.length -4) !==-1){
+					las.push(anchor);
+				}
+			});
 			data.push({
 				objectid:entry.attributes.objectid,//0
 				apino:entry.attributes.apino,//1
@@ -215,11 +232,14 @@
 				county:entry.attributes.county,//4
 				twp:entry.attributes.twp,//5
 				rge:entry.attributes.rge,//6
-				headeruri:entry.attributes.headeruri,//7
+				//headeruri:entry.attributes.headeruri,//7
 				section_:entry.attributes.section_,//8
 				drillertotaldepth:entry.attributes.drillertotaldepth,//9
 				formationtd:entry.attributes.formationtd,//10
-				wellname:entry.attributes.wellname//11
+				wellname:entry.attributes.wellname,//11
+				logField: '<ul>' + logs.join(" ") + '</ul>',
+				lasField: '<ul>' + las.join(" ") + '</ul>',
+				folderField: '<ul>' + folders.join(" ") + '</ul>'
 				//relatedresource: parts[0]
 			});
 
@@ -269,7 +289,7 @@
 </div></form>    </div>
   </div>
 </div>
-  </div>
+  </div> -->
  <!-- /header region -->
       <div id="menu-bar" class="nav">
       <nav id="block-system-main-menu" class="block block-system block-menu block-odd block-count-2 block-region-menu-bar block-menu" role="navigation">
@@ -295,15 +315,14 @@
   <div id="lefttPane"
 	   data-dojo-type="dijit.layout.ContentPane"
 	   data-dojo-props="region:'left'">
-	   <span id="info" style="position:absolute; left:15px; bottom:2%; color:#0000; z-index:50;"></span>
+	   <span id="info" style="position:absolute; left:15px; bottom:2%; color:#0000; z-index:0;"></span>
 	   <!--<div id="scalebar" style="position:relative; left:1%; bottom:-95%;"></div>-->
 	   
 	<div id="buttons">
 		<p>
 							Map Search: To download well folders, scanned well logs or LAS data select the individual well and <br>
-							Map View: Click the Satellite, Streets or Topo button to change the map.<br>
-							Map Navigation: Use the mouse wheel to zoom in and out. Click and hold to pan.<br>
-							Click the Search button to get the report of all Cores and Cuttings visible on the map.
+							Overview Map: Click the arrow in the upper right corner to activate the map.<br>
+							Map Navigation: Use the mouse wheel to zoom in and out. Click and hold to pan.
 							</p>
 		<button data-dojo-type="dijit.form.Button" onClick="selectionToolbar.activate(esri.toolbars.Draw.EXTENT);">Select Wells</button>
 		<button data-dojo-type="dijit.form.Button" onClick="wellFeatureLayer.clearSelection();">Clear Selection</button><br>
@@ -338,9 +357,9 @@
 			  <th field="section_" width="auto">Section</th>
 			  <th field="drillertotaldepth" width="auto">Depth (ft)</th>
 			  <th field="formationtd" width="auto">Formation at Depth</th>
-			  <th field="headeruri" width="auto" formatter="folderFormatter">Well Folder</th>
-			  <th field="headeruri" width="auto" formatter="logFormatter">Scanned Well Log</th>
-			  <th field="headeruri" width="auto" formatter="lasFormatter">LAS Data</th>
+			  <th field="folderField" width="auto" >Well Folder</th>
+			  <th field="logField" width="auto" >Scanned Well Log</th>
+			  <th field="lasField" width="auto" >LAS Data</th>
             </tr> 
           </thead> 
         </table> 
