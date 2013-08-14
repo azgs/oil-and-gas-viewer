@@ -8,7 +8,7 @@
   <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
   <title>Oil and Gas Viewer</title>
 
-  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css">
+  <!--<link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css">-->
   <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css" />
   <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/tundra/tundra.css"> 
   <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dojox/grid/resources/Grid.css">     
@@ -35,7 +35,7 @@
     }
 
 	#bottomPane {
-	  height: 200px;
+	  height: 20%;
     }
 	
     #legendPane {
@@ -61,9 +61,9 @@
     dojo.require("dojo.store.Memory");
 	
 	//var grid;
-
-    function init() {
+	var findParams;
 	
+    function init() {
       var map = new esri.Map("map", { 
         basemap: "topo",
         center: [-111.3877, 34.5],
@@ -79,7 +79,6 @@
         });
 		
 	
-
 	  var scalebar = new esri.dijit.Scalebar({
           map: map,
           scalebarUnit: "english"
@@ -108,10 +107,12 @@
 					"<br><b>Formation</b>: ${formationtd}" +
 					"<br><b>Download Well Folders </b>: <a href=\"${headeruri}\" target='_blank'> PDF </a>" +
 					"<br><b>Download Scanned Well Logs </b>: <a href=\"${headeruri}\" target='_blank'> TIFF </a>" +
-					"<br><b>Download LAS Data</b>: <a href=\"${headeruri}\" target='_blank'> LAS </a>";						
+					"<br><b>Download LAS Data</b>: <a href=\"${headeruri.split('|')}\" target='_blank'> LAS </a>";						
       var infoTemplate = new esri.InfoTemplate("Well Info", content);
 	  
-     
+		//esri.InfoTemplate("Title", function (feature) {
+		//	return feature.apino;
+		//});
 	  
 	 // https://my.usgs.gov/arcgis/rest/services/crcwc/crcwc/MapServer/5
 	  var sect = new esri.layers.ArcGISDynamicMapServiceLayer("http://services.azgs.az.gov/ArcGIS/rest/services/baselayers/ArizonaPLSS/MapServer/", {
@@ -151,7 +152,17 @@
       map.addLayers([sect, wellFeatureLayer]);
 	  
 	  dojo.connect(map, "onLoad", initSelectToolbar);
-    }
+	  
+	 /* findTask = new esri.tasks.FindTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
+
+	  dojo.connect(map, "onLoad", function() {
+		//findParams = new esri.tasks.FindParamaters();
+		findParams.returnGeometry = true;
+		findParams.searchFields = ["apino"];
+		findParams.outSpatialReference = map.spatialReference;
+    });
+*/
+	}
 	//Pointer Coordinates
 	function showCoordinates(evt) {
         //console.log("show");
@@ -181,7 +192,12 @@
 		});
 			
     }
-	
+	//apino = document.getElementById("email").select();
+	/*function apiSearch(){
+		findParams.searchText = dojo.byId("searchtext").value;
+		findTask.execute(findParams, console.log("!"));
+	}
+	*/
 	function folderFormatter(x) {
 		//x is the value
 		var link = '<a href='+ x + ' target="_blank">' + x + '</a>';
@@ -207,13 +223,25 @@
 		dojo.forEach(featureSet, function (entry) {
 			var logs = [], 
 				las = [], 
-				folders = [];
-			var raw = entry.attributes.relatedresource.split("|");
+				folders = [],
+				relatedResource = entry.attributes.relatedresource === null ? "no value" : entry.attributes.relatedresource;
+				
+				
+				//relatedResource = entry.attributes.relatedresource || "";
+				//if (entry.attributes.relatedresource === null) {
+				//}
+			//if ( relatedResource.length >=4){
+			
+			
+			var raw = relatedResource.split("|");
 			raw.forEach(function (bit){
 				var resource = bit.split(", ");
+				if (resource[0] && resource[1]){
 				var url = resource[1].trim();
 				var name = resource[0].trim();
+				}
 				var anchor = "<li><a href='" + url + "' target='_blank'>" + name + "</a></li>";
+				if (url != null ){
 				if ( url.indexOf(".tif", url.length -4) !==-1){
 					logs.push(anchor);
 				}
@@ -223,7 +251,9 @@
 				if ( url.indexOf(".las", url.length -4) !==-1){
 					las.push(anchor);
 				}
+				}
 			});
+			//}
 			data.push({
 				objectid:entry.attributes.objectid,//0
 				apino:entry.attributes.apino,//1
@@ -240,7 +270,6 @@
 				logField: '<ul>' + logs.join(" ") + '</ul>',
 				lasField: '<ul>' + las.join(" ") + '</ul>',
 				folderField: '<ul>' + folders.join(" ") + '</ul>'
-				//relatedresource: parts[0]
 			});
 
 		});
@@ -290,6 +319,7 @@
   </div>
 </div>
   </div> -->
+  
  <!-- /header region -->
       <div id="menu-bar" class="nav">
       <nav id="block-system-main-menu" class="block block-system block-menu block-odd block-count-2 block-region-menu-bar block-menu" role="navigation">
@@ -300,7 +330,9 @@
  <!-- /menu bar -->
   </header>
   </div>
-
+ 
+ 
+<!--Everything not in the Header-->
 <div id="home"
      data-dojo-type="dijit.layout.BorderContainer"
      data-dojo-props="design:'headline', gutters:true"
@@ -317,7 +349,10 @@
 	   data-dojo-props="region:'left'">
 	   <span id="info" style="position:absolute; left:15px; bottom:2%; color:#0000; z-index:0;"></span>
 	   <!--<div id="scalebar" style="position:relative; left:1%; bottom:-95%;"></div>-->
-	   
+	
+	
+	
+	<!--Select anc Clear Buttons-->
 	<div id="buttons">
 		<p>
 							Map Search: To download well folders, scanned well logs or LAS data select the individual well and <br>
@@ -328,7 +363,11 @@
 		<button data-dojo-type="dijit.form.Button" onClick="wellFeatureLayer.clearSelection();">Clear Selection</button><br>
 	</div>
 	
-		
+	<!--API Search Bar-->
+	<!--<div id="apisearch">
+		<input type="text" id="searchtext" value="02-017-05048"/>
+		<button data-dogo-type="dijit.form.Button" onClick="apiSearch()">Search by API</button>
+	</div>-->
 	
     <div data-dojo-type="dijit.layout.ContentPane" id="legendPane"
          data-dojo-props="title:'Legend', selected:true">
@@ -368,10 +407,6 @@
 
 </div>
 
-<!---
-var mystuff = "typeof: http:... | typeof: http:..."
-var parts = mystuff.split(" | ") // >>>> ["typeof: http:...", "typeof: http:..."]
--->
 
 
 
