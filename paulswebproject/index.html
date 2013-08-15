@@ -1,70 +1,222 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible"
+content="IE=7,IE=9">
+	<meta name="viewport" content="initial-scale=1, 
+maximum-scale=1, user-scalable=no">
+	
 <title>Text Search</title>
+<link rel="stylesheet"
+href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
+<script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+    <script>
+      dojo.require("esri.tasks.query");
+      dojo.require("esri.map");
+
+      var queryTask, query;
+	  require([
+	  "esri/tasks/query", "esri/tasks/QueryTask",
+	  "dojo/dom", "dojo/on", "dojo/domReady!"
+	  ], function(
+	   Query, QueryTask,
+	   dom, on
+	  ){
+	  queryTask = new 
+	  QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
+     
+      
+        query = new Query();
+        query.returnGeometry = true;
+        query.outFields = ["apino","operator","wellname","status","field","county","twp","rge","section_","formationtd","shape"];
+      
+	  on(dom.byId("execute"), "click", execute);
+
+	  function execute() {
+		var whereclause = "apino = 02-001-05159";
+		/*
+		function addToWhereClause(inputEleId, fieldName) {
+			var content = dom.byId(inputEleId).value;
+			if (content !== "") {
+				whereclause += fieldName + "='" + content + "'";
+			}
+		}
+		
+		
+		// Start moving through the inputs
+		// APINO
+		addToWhereClause("apino", "apino");
+		
+		// OPERATOR
+		addToWhereClause("operator", "operator");
+		
+		//WELLNAME
+		addToWhereClause("wellname", "wellname");
+		
+		//STATUS
+		addToWhereClause("status", "status");
+		
+		//FIELD
+		addToWhereClause("field", "field");
+		
+		//COUNTY
+		addToWhereClause("county", "county");
+		
+		//TOWNSHIP
+		addToWhereClause("twp", "twp");
+		
+		//RANGE
+		addToWhereClause("rge", "rge");
+		
+		//SECTION
+		addToWhereClause("section_", "section_");
+		
+		//FORMATIONTD
+		addToWhereClause("formationtd","formationtd");
+		
+		//SHAPE
+		//addToWhereClause("shape","shape");
+		*/
+		query.where = whereclause
+		
+        queryTask.execute(query, showResults);
+      }
+
+
+      function showResults(results) {
+        var s = "";
+        for (var i=0, il=results.features.length; i<il; i++) {
+          var featureAttributes = results.features[i].attributes;
+          for (att in featureAttributes) {
+            s = s + "<b>" + att + ":</b>  " + featureAttributes[att] + "<br>";
+          }
+		  s = s + "<br>";
+        }
+        dom.byId("results").innerHTML = s;
+      }
+	});
+	  </script>
 <style type="text/css">
-body {
+#tab_body {
 border:5px solid black;
 background-color:#F4A460;
 height:600px;
+width:1200px;
 }
-#meridians{
+form table {
+border:2px solid black;
+margin-top:-2px;
+margin-left:10px;
+float:left;
+}
+#image_box {
+border:2px solid black;
 float:right;
+padding-right:10px;
+padding-top:10px;
+padding-left:10px;
+padding-bottom:10px;
+margin-top:10px;
+margin-right:10px;
 }
-form {
-margin-top:5px;
-margin-left:5px;
-border:2px soild black;
+#img_info {
+border-top:2px solid black;
+padding-bottom:-10px;
+padding-left:10px;
+padding-right:10px;
+margin-left:-10px;
+margin-right:-10px;
 }
+#search_info {
+border-left:2px solid black;
+border-right:2px solid black;
+border-top:2px solid black;
+border-bottom:2px solid black;
+width:586px;
+margin-top:10px;
+margin-left:10px;
+}
+#search_body {
+<!--
+border:2px solid black;
+width: 590px;
+-->
+}
+#results {
+background-color:#0000FF;
+padding:5px; 
+margin:5px;
+clear:both;
+}
+
 </style>
+
 </head>
 <body>
-<image id="meridians" src="photos/Arizona_Meridians.jpg">
+<div id="tab_body">
+<div id="image_box">
+<image src="photos/Arizona_Meridians.jpg">
+<div id="img_info">
+<p>Map of Arizona State Meridians</p>
+</div>
+</div>
+
 <form method="post" action="">
+<div id="search_body">
+<div id="search_info">
+<p>
+Here be some info
+</p>
+</div>
 <table>
 <tr>
 <td class="label">
 <label for="apino">API Number</label>
 </td>
 <td>
-<input type="text" name="apino" size="14" maxlength="14"><br>
+<input type="text" name="apino" id="apino" size="14" maxlength="14"><br>
 </td>
+</tr>
+<tr>
 <td class="label">
 <label for="Permit_Number"> State Permit Number</label>
 </td>
 <td>
 <input type="text" name="Permit_Number" size="4" maxlength="4"><br>
 </td>
-
 </tr>
 <tr>
 <td class="label">
 <label for="State_County">County</label>
 </td>
 <td>
-<select name="County" id="State_County">
-<option value="county">Apache</option>
-<option value="county">Cochise</option>
-<option value="county">Coconino</option>
-<option value="county">Gila</option>
-<option value="county">Graham</option>
-<option value="county">Greenlee</option>
-<option value="county">La Paz</option>
-<option value="county">Maricopa</option>
-<option value="county">Mohave</option>
-<option value="county">Navajo</option>
-<option value="county">Pima</option>
-<option value="county">Pinal</option>
-<option value="county">Santa Cruz</option>
-<option value="county">Yavapai</option>
-<option value="county">Yuma</option>
+<select name="county" id="county">
+<option value=" "> </option>
+<option value="Apache">Apache</option>
+<option value="Cochise">Cochise</option>
+<option value="Coconino">Coconino</option>
+<option value="Gila">Gila</option>
+<option value="Graham">Graham</option>
+<option value="Greenlee">Greenlee</option>
+<option value="La Paz">La Paz</option>
+<option value="Maricopa">Maricopa</option>
+<option value="Mohave">Mohave</option>
+<option value="Navajo">Navajo</option>
+<option value="Pima">Pima</option>
+<option value="Pinal">Pinal</option>
+<option value="Santa Cruz">Santa Cruz</option>
+<option value="Yavapai">Yavapai</option>
+<option value="Yuma">Yuma</option>
 </select>
 </td>
+</tr>
+<tr>
 <td class="label">
 <label for="field">Field Name</label>
 </td>
 <td>
-<input type="text" name="field" size="20" maxlength="20"><br>
+<input type="text" name="field" id="field" size="30" maxlength="30"><br>
 </td>
 </tr>
 <tr>
@@ -72,55 +224,60 @@ border:2px soild black;
 <label for="Township">Township</label>
 </td>
 <td>
-<input type="text" name="Township" size="4" maxlength="4"><br>
+<input type="text" name="twp" id="twp" size="4" maxlength="4"><br>
 </td>
+</tr>
+<tr>
 <td class="label">
 <label for="Range">Range</label>
 </td>
 <td>
-<input type="text" name="Range" size="4" maxlength="4"><br>
+<input type="text" name="rge" id="rge" size="4" maxlength="4"><br>
 </td>
+</tr>
+<tr>
 <td class="label">
 <label for="Township_Section">Section</label>
 </td>
 <td>
-<select name="Section" id="Township_Section">
-<option value="section">1</option>
-<option value="section">2</option>
-<option value="section">3</option>
-<option value="section">4</option>
-<option value="section">5</option>
-<option value="section">6</option>
-<option value="section">7</option>
-<option value="section">8</option>
-<option value="section">9</option>
-<option value="section">10</option>
-<option value="section">11</option>
-<option value="section">12</option>
-<option value="section">13</option>
-<option value="section">14</option>
-<option value="section">15</option>
-<option value="section">16</option>
-<option value="section">17</option>
-<option value="section">18</option>
-<option value="section">19</option>
-<option value="section">20</option>
-<option value="section">21</option>
-<option value="section">22</option>
-<option value="section">23</option>
-<option value="section">24</option>
-<option value="section">25</option>
-<option value="section">26</option>
-<option value="section">27</option>
-<option value="section">28</option>
-<option value="section">29</option>
-<option value="section">30</option>
-<option value="section">31</option>
-<option value="section">32</option>
-<option value="section">33</option>
-<option value="section">34</option>
-<option value="section">35</option>
-<option value="section">36</option>
+<select name="section_" id="section_">
+<option value=""> </option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+<option value="32">32</option>
+<option value="33">33</option>
+<option value="34">34</option>
+<option value="35">35</option>
+<option value="36">36</option>
 </select>
 </td>
 </tr>
@@ -129,7 +286,7 @@ border:2px soild black;
 <label for="operator">Operator</label>
 </td>
 <td>
-<input type="text" name="operator" size="20" maxlength="20"><br>
+<input type="text" name="operator" id="operator" size="30" maxlength="30"><br>
 </td>
 </tr>
 <tr>
@@ -137,15 +294,7 @@ border:2px soild black;
 <label for="wellname">Well Name</label>
 </td>
 <td>
-<input type="text" name="wellname" size="20" maxlength="20"><br>
-</td>
-</tr>
-<tr>
-<td class="label">
-<label for="welltype">Well Type</label>
-</td>
-<td>
-<input type="text" name="welltype" size="20" maxlength="20"><br>
+<input type="text" name="wellname" id="wellname" size="30" maxlength="30"><br>
 </td>
 </tr>
 <tr>
@@ -153,7 +302,31 @@ border:2px soild black;
 <label for="status">Well Status</label>
 </td>
 <td>
-<input type="text" name="status" size="20" maxlength="20"><br>
+<!--<input type="text" name="status" size="20" maxlength="20"><br>-->
+<select name="status" id="status">
+<option value=""> </option>
+<option value="Dry hole">D = Dry hole</option>
+<option value="G = Gas well, producing">G = Gas well, producing</option>
+<option value="GP = Gas well, plugged and abandoned">GP = Gas well, plugged and abandoned</option>
+<option value="GS = Gas well, shut in">GS = Gas well, shut in</option>
+<option value="Helium well, completed, plugged and abandoned, no production record">HN = Helium well, completed, plugged and abandoned, no production record</option>
+<option value="HP = Helium well, completed, plugged and abandoned, production record">HP = Helium well, completed, plugged and abandoned, production record</option>
+<option value="HS = Helium well, completed, shut in">HS = Helium well, completed, shut in</option>
+<option value="JA = Test hole, junked and abandoned">JA = Test hole, junked and abandoned</option>
+<option value="O = Oil well, producing">O = Oil well, producing</option>
+<option value="OP = Oil well, plugged and abandoned">OP = Oil well, plugged and abandoned</option>
+<option value="OS = Oil well, shut in">OS = Oil well, shut in</option>
+<option value="OW = Oil well, converted to salt-water disposal">OW = Oil well, converted to salt-water disposal</option>
+<option value="PW = Salt-water disposal well, plugged and abandoned">PW = Salt-water disposal well, plugged and abandoned</option>
+<option value="S = Stratigraphic test"> S = Stratigraphic test</option>
+<option value="SA = Salt-mining well, plugged and abandoned"> SA = Salt-mining well, plugged and abandoned</option>
+<option value="SL = Storage well, liquefied petroleum gas">SL = Storage well, liquefied petroleum gas</option>
+<option value="SP = Storage well, liquefied petroleum gas, plugged and abandoned">SP = Storage well, liquefied petroleum gas, plugged and abandoned</option>
+<option value="TA = Test well, temporarily abandoned">TA = Test well, temporarily abandoned</option>
+<option value="TD = Geothermal well, dry, plugged and abandoned">TD = Geothermal well, dry, plugged and abandoned</option>
+<option value="TP = Geothermal; gradient well, plugged and abandoned">TP = Geothermal; gradient well, plugged and abandoned</option>
+<option value="WW = Water well">WW = Water well</option>
+</select>
 </td>
 </tr>
 <tr>
@@ -161,18 +334,24 @@ border:2px soild black;
 <label for="formationtd">Formation at Total Depth</label>
 </td>
 <td>
-<input type="text" name="formationtd" size="20" maxlength="20"><br>
+<input type="text" name="formationtd" id="formationtd" size="30" maxlength="30"><br>
 </td>
 </tr>
 <tr>
 <td>
+<!---
 <input type="submit" value="Submit Search"/>
+-->
+<input type="button" id="execute" value="Submit Search"/>
 </td>
 <td>
 <input type="reset" value="Reset Search"/>
 </td>
 </tr>
 </table>
+</div>
+<div id="results">
+</div>
 </form>
 
 </body>
