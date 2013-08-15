@@ -114,7 +114,6 @@
 		//	return feature.apino;
 		//});
 	  
-	 // https://my.usgs.gov/arcgis/rest/services/crcwc/crcwc/MapServer/5
 	  var sect = new esri.layers.ArcGISDynamicMapServiceLayer("http://services.azgs.az.gov/ArcGIS/rest/services/baselayers/ArizonaPLSS/MapServer/", {
         mode:  esri.layers.FeatureLayer.MODE_ONDEMAND,
         outFields:["*"]
@@ -127,9 +126,8 @@
         outFields: ["*"]
       });
 	  
-    
-      wellFeatureLayer.setDefinitionExpression("welltype='O&Gexplor'");
-	  
+	  //wellFeatureLayer.setDefinitionExpression("welltype='O&Gexplor'");
+	  wellFeatureLayer.setDefinitionExpression("welltype IN ('Gas','Geothermal','O&Gexplor','GasStorage')");
 	  
 	  //Controls what the select and clear buttons do
 	  wellFeatureLayer.setSelectionSymbol(fieldsSelectionSymbol);
@@ -165,7 +163,6 @@
 	}
 	//Pointer Coordinates
 	function showCoordinates(evt) {
-        //console.log("show");
         //get mapPoint from event
         //The map is in web mercator - modify the map point to display the results in geographic
         var mp = esri.geometry.webMercatorToGeographic(evt.mapPoint);
@@ -278,7 +275,6 @@
 			};
 
 		var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
-		//console.log(store);
 		grid.setStore(store);
 	}
 	
