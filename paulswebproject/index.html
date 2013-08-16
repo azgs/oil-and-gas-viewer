@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta http-equiv="X-UA-Compatible"
-content="IE=7,IE=9">
+content="IE=9,IE=10">
 	<meta name="viewport" content="initial-scale=1, 
 maximum-scale=1, user-scalable=no">
 	
@@ -12,37 +12,28 @@ maximum-scale=1, user-scalable=no">
 href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
     <script>
-      dojo.require("esri.tasks.query");
+      dojo.require("esri.tasks.find");
       dojo.require("esri.map");
-
-      var queryTask, query;
-	  require([
-	  "esri/tasks/query", "esri/tasks/QueryTask",
-	  "dojo/dom", "dojo/on", "dojo/domReady!"
-	  ], function(
-	   Query, QueryTask,
-	   dom, on
-	  ){
-	  queryTask = new 
-	  QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
-     
-      
-        query = new Query();
-        query.returnGeometry = true;
-        query.outFields = ["apino","operator","wellname","status","field","county","twp","rge","section_","formationtd","shape"];
-      
-	  on(dom.byId("execute"), "click", execute);
-
-	  function execute() {
+	
+	var find, params;
+	function init() {
+		find = new
+	esri.tasks.FindTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
+		params = new esri.tasks.FindParameters();
+		params.layerIds = [10];
+		params.searchFields = 
+	["apino","operator","wellname","status","field","county","twp","rge","section_","formationtd"];
+		}
+	//on(dom.byId("Find"), "click", Find);	
+		function doFind() {
 		var whereclause = "apino = 02-001-05159";
-		/*
+		}
+		
 		function addToWhereClause(inputEleId, fieldName) {
 			var content = dom.byId(inputEleId).value;
 			if (content !== "") {
 				whereclause += fieldName + "='" + content + "'";
 			}
-		}
-		
 		
 		// Start moving through the inputs
 		// APINO
@@ -74,17 +65,27 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 		
 		//FORMATIONTD
 		addToWhereClause("formationtd","formationtd");
-		
+		console.log(rge)
 		//SHAPE
 		//addToWhereClause("shape","shape");
-		*/
-		query.where = whereclause
 		
-        queryTask.execute(query, showResults);
-      }
-
-
-      function showResults(results) {
+		//query.where = whereclause
+		find.where = whereclause
+        find.execute(params, showResults);
+		}
+		function showResults(results) {
+		var result,attribs;
+		var s = ["<table border=\"1\"><thead><tr style=\"background-color:#ccc;\"><td>State Name</td><td>FIPS</td><td>Population (1999)</td></tr></thead><tbody id=\"states\">"];
+		dojo.forEach(results,function(result){
+		attribs = result.feature.attributes;
+		s.push("<tr><td>" + attribs.apino + "</td><td>" + attribs.
+		});
+		s.push("</tbody></table>");
+		dojo.byId("tbl").innerHTML = s.join("");
+		}
+		
+		dojo.ready(init);
+      /*function showResults(results) {
         var s = "";
         for (var i=0, il=results.features.length; i<il; i++) {
           var featureAttributes = results.features[i].attributes;
@@ -94,8 +95,74 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 		  s = s + "<br>";
         }
         dom.byId("results").innerHTML = s;
-      }
-	});
+      }*/
+	  
+	  /*function updateGrid(featureSet){
+		
+		var data=[];
+		var grid = dijit.byId('grid');
+		dojo.forEach(featureSet, function (entry) {
+			var logs = [], 
+				las = [], 
+				folders = [],
+				relatedResource = entry.attributes.relatedresource === null ? "no value" : entry.attributes.relatedresource;
+				
+				
+				//relatedResource = entry.attributes.relatedresource || "";
+				//if (entry.attributes.relatedresource === null) {
+				//}
+			//if ( relatedResource.length >=4){
+			
+			
+			var raw = relatedResource.split("|");
+			raw.forEach(function (bit){
+				var resource = bit.split(", ");
+				if (resource[0] && resource[1]){
+				var url = resource[1].trim();
+				var name = resource[0].trim();
+				}
+				var anchor = "<li><a href='" + url + "' target='_blank'>" + name + "</a></li>";
+				if (url != null ){
+				if ( url.indexOf(".tif", url.length -4) !==-1){
+					logs.push(anchor);
+				}
+				if ( url.indexOf(".pdf", url.length -4) !==-1){
+					folders.push(anchor);
+				} 
+				if ( url.indexOf(".las", url.length -4) !==-1){
+					las.push(anchor);
+				}
+				}
+			});
+			//}
+			data.push({
+				objectid:entry.attributes.objectid,//0
+				apino:entry.attributes.apino,//1
+				otherid:entry.attributes.otherid,//2
+				operator:entry.attributes.operator,//3
+				county:entry.attributes.county,//4
+				twp:entry.attributes.twp,//5
+				rge:entry.attributes.rge,//6
+				//headeruri:entry.attributes.headeruri,//7
+				section_:entry.attributes.section_,//8
+				drillertotaldepth:entry.attributes.drillertotaldepth,//9
+				formationtd:entry.attributes.formationtd,//10
+				wellname:entry.attributes.wellname,//11
+				logField: '<ul>' + logs.join(" ") + '</ul>',
+				lasField: '<ul>' + las.join(" ") + '</ul>',
+				folderField: '<ul>' + folders.join(" ") + '</ul>'
+			});
+
+		});
+		var dataForGrid= {
+			items: data
+			};
+
+		var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
+		grid.setStore(store);
+	}
+
+	});*/
 	  </script>
 <style type="text/css">
 #tab_body {
@@ -342,7 +409,7 @@ Here be some info
 <!---
 <input type="submit" value="Submit Search"/>
 -->
-<input type="button" id="execute" value="Submit Search"/>
+<input type="button" id="Find" value="Submit Search"/>
 </td>
 <td>
 <input type="reset" value="Reset Search"/>
@@ -352,6 +419,31 @@ Here be some info
 </div>
 <div id="results">
 </div>
+
+ <!--<div id="bottomPane"
+       data-dojo-type="dijit.layout.ContentPane"
+       data-dojo-props="region:'bottom'">
+	    https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html 
+		<table data-dojo-type="dojox.grid.DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%"> 
+          <thead> 
+            <tr>
+			  <th field="apino" width="auto">API No</th>
+			  <th field="otherid" width="auto">State Permit No</th>
+			  <th field="operator" width="auto">Operator</th>
+			  <th field="county" width="auto">County</th>
+			  <th field="twp" width="auto">Township</th>
+			  <th field="rge" width="auto">Range</th>
+			  <th field="section_" width="auto">Section</th>
+			  <th field="drillertotaldepth" width="auto">Depth (ft)</th>
+			  <th field="formationtd" width="auto">Formation at Depth</th>
+			  <th field="folderField" width="auto" >Well Folder</th>
+			  <th field="logField" width="auto" >Scanned Well Log</th>
+			  <th field="lasField" width="auto" >LAS Data</th>
+            </tr> 
+          </thead> 
+        </table> 
+	</div>--> 
+
 </form>
 
 </body>
