@@ -29,13 +29,13 @@
     #rightPane {
       width: 20%;
     }
-	
+
 	#lefttPane {
       width: 15%;
     }
 
 	#bottomPane {
-	  height: 20%;
+	  height: 25%;
     }
 	
     #legendPane {
@@ -48,6 +48,8 @@
   <script>
     dojo.require("esri.map");
 	dojo.require("esri.tasks.query");
+	dojo.require("esri.tasks.find");
+	dojo.require("esri.tasks.FindParameters");
 	dojo.require("esri.dijit.Legend");
 	dojo.require("esri.dijit.Scalebar");
 	dojo.require("esri.toolbars.draw");
@@ -64,6 +66,9 @@
 	var findParams;
 	
     function init() {
+	
+	
+	
       var map = new esri.Map("map", { 
         basemap: "topo",
         center: [-111.3877, 34.5],
@@ -100,7 +105,7 @@
       //Popup window settings
       var content = "<b>API Number</b>: ${apino}"  +
 					"<br><b>State Permit Number</b>: ${otherid}"  +
-					"<br><b>Operator</b>: ${operator}" +
+					"<br><b>Operator</b>: ${wellname}" +
 					"<br><b>County</b>: ${county}" +
 					"<br><b>Township-Range, Section </b>: T${twp}-R${rge}, Sec. ${section_}" +
 					"<br><b>Total Depth</b>: ${drillertotaldepth} ft" +
@@ -114,7 +119,7 @@
 		//	return feature.apino;
 		//});
 	  
-	  var sect = new esri.layers.ArcGISDynamicMapServiceLayer("http://services.azgs.az.gov/ArcGIS/rest/services/baselayers/ArizonaPLSS/MapServer/", {
+	  sect = new esri.layers.ArcGISDynamicMapServiceLayer("http://services.azgs.az.gov/ArcGIS/rest/services/baselayers/ArizonaPLSS/MapServer/", {
         mode:  esri.layers.FeatureLayer.MODE_ONDEMAND,
         outFields:["*"]
       });	
@@ -126,7 +131,6 @@
         outFields: ["*"]
       });
 	  
-	  //wellFeatureLayer.setDefinitionExpression("welltype='O&Gexplor'");
 	  wellFeatureLayer.setDefinitionExpression("welltype IN ('Gas','Geothermal','O&Gexplor','GasStorage')");
 	  
 	  //Controls what the select and clear buttons do
@@ -151,15 +155,17 @@
 	  
 	  dojo.connect(map, "onLoad", initSelectToolbar);
 	  
-	 /* findTask = new esri.tasks.FindTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
+	 
+	 //findTask = new esri.tasks.FindTask(wellFeatureLayer);
+	 findTask = new esri.tasks.FindTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer");
 
-	  dojo.connect(map, "onLoad", function() {
-		//findParams = new esri.tasks.FindParamaters();
+	  //dojo.connect(map, "onLoad", function() {
+		findParams = new esri.tasks.FindParameters();
 		findParams.returnGeometry = true;
 		findParams.searchFields = ["apino"];
 		findParams.outSpatialReference = map.spatialReference;
-    });
-*/
+    //});
+
 	}
 	//Pointer Coordinates
 	function showCoordinates(evt) {
@@ -190,11 +196,11 @@
 			
     }
 	//apino = document.getElementById("email").select();
-	/*function apiSearch(){
-		findParams.searchText = dojo.byId("searchtext").value;
-		findTask.execute(findParams, console.log("!"));
+	function apiSearch(){
+		findParams.searchText = dojo.byId("textSearch").value;
+		findTask.execute(findParams, updateGrid);
 	}
-	*/
+	
 	function folderFormatter(x) {
 		//x is the value
 		var link = '<a href='+ x + ' target="_blank">' + x + '</a>';
@@ -255,7 +261,7 @@
 				objectid:entry.attributes.objectid,//0
 				apino:entry.attributes.apino,//1
 				otherid:entry.attributes.otherid,//2
-				operator:entry.attributes.operator,//3
+				wellname:entry.attributes.wellname,//3
 				county:entry.attributes.county,//4
 				twp:entry.attributes.twp,//5
 				rge:entry.attributes.rge,//6
@@ -287,7 +293,7 @@
 
 <body class="tundra">
 
-
+<!--
  <div id="page" class="container">
 
   <header id="header" class="clearfix">
@@ -317,7 +323,7 @@
   </div> -->
   
  <!-- /header region -->
-      <div id="menu-bar" class="nav">
+  <!--    <div id="menu-bar" class="nav">
       <nav id="block-system-main-menu" class="block block-system block-menu block-odd block-count-2 block-region-menu-bar block-menu" role="navigation">
               <h2 class="block-title element-invisible">Main menu</h2>
             <div class="menu-wrapper"><ul class="menu clearfix"><li class="first leaf menu-item-198"><a href="/" class="active">Home</a></li><li class="leaf menu-item-398"><a href="/publications">Publications</a></li><li class="leaf menu-item-408"><a href="/permits">Permits</a></li><li class="leaf menu-item-437"><a href="/production_reports">Production Reports</a></li><li class="leaf menu-item-410"><a href="/forms">Forms</a></li><li class="leaf menu-item-926"><a href="/meetings">Meetings</a></li><li class="leaf menu-item-409"><a href="/links">Links</a></li><li class="leaf menu-item-396"><a href="/faqs/questions" title="">FAQs</a></li><li class="last leaf menu-item-397"><a href="/contact" title="">Contact/Location</a></li></ul></div>
@@ -333,22 +339,22 @@
      data-dojo-type="dijit.layout.BorderContainer"
      data-dojo-props="design:'headline', gutters:true"
      style="width: 100%; height: 100%; margin: 0;">
-  <div id="map"
+
+	 <div id="map"
        data-dojo-type="dijit.layout.ContentPane"
        data-dojo-props="region:'center'"
-       style="overflow:hidden;">
-	   
+       style="overflow:hidden;">	   
   </div>
   
   <div id="lefttPane"
 	   data-dojo-type="dijit.layout.ContentPane"
 	   data-dojo-props="region:'left'">
-	   <span id="info" style="position:absolute; left:15px; bottom:2%; color:#0000; z-index:0;"></span>
+	   <span id="info" style="position:absolute; left:15px; bottom:2%; color:#000; z-index:0;"></span>
 	   <!--<div id="scalebar" style="position:relative; left:1%; bottom:-95%;"></div>-->
 	
 	
 	
-	<!--Select anc Clear Buttons-->
+	<!--Select and Clear Buttons-->
 	<div id="buttons">
 		<p>
 							Map Search: To download well folders, scanned well logs or LAS data select the individual well and <br>
@@ -360,19 +366,16 @@
 	</div>
 	
 	<!--API Search Bar-->
-	<!--<div id="apisearch">
-		<input type="text" id="searchtext" value="02-017-05048"/>
+	<div id="apisearch">
 		<button data-dogo-type="dijit.form.Button" onClick="apiSearch()">Search by API</button>
-	</div>-->
-	
+		<input type="text" id="textSearch" value="02-017-05048"/>
+	</div>
+	<!--Legend-->
     <div data-dojo-type="dijit.layout.ContentPane" id="legendPane"
          data-dojo-props="title:'Legend', selected:true">
-      <div id="legendDiv"></div>
-	  
+      <div id="legendDiv"></div>	  
     </div>
-     
-	
-    
+         
   </div>
   
   
@@ -385,7 +388,7 @@
             <tr>
 			  <th field="apino" width="auto">API No</th>
 			  <th field="otherid" width="auto">State Permit No</th>
-			  <th field="operator" width="auto">Operator</th>
+			  <th field="wellname" width="auto">Operator</th>
 			  <th field="county" width="auto">County</th>
 			  <th field="twp" width="auto">Township</th>
 			  <th field="rge" width="auto">Range</th>
