@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible"
+content="IE=9,IE=10">
+	<meta name="viewport" content="initial-scale=1, 
+maximum-scale=1, user-scalable=no">
+	
+<title>Text Search</title>
+<link rel="stylesheet"
+href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
+<script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+    <script>
+      dojo.require("esri.tasks.find");
+      dojo.require("esri.map");
+	
+	var find, params;
+	function init() {
+		find = new
+	esri.tasks.FindTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer");
+		params = new esri.tasks.FindParameters();
+		params.layerIds = [0];
+		params.searchFields = ["apino"];
+		}
+	//on(dom.byId("Find"), "click", Find);	
+		function doFind() {
+            params.searchText = dojo.byId("apino").value;
+            find.execute(params, showResults);
+	//	var whereclause = "apino = 02-001-05159";
+		}
+//http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/find?searchText=02-001-20132&contains=true&searchFields=&sr=&layers=0
+        function showResults(results) {
+            console.log(results);
+        }
+
+/*
+		function addToWhereClause(inputEleId, fieldName) {
+			var content = dom.byId(inputEleId).value;
+			if (content !== "") {
+				whereclause += fieldName + "='" + content + "'";
+			}
+		
+		// Start moving through the inputs
+		// APINO
+		addToWhereClause("apino", "apino");
+		
+		// OPERATOR
+		addToWhereClause("operator", "operator");
+		
+		//WELLNAME
+		addToWhereClause("wellname", "wellname");
+		
+		//STATUS
+		addToWhereClause("status", "status");
+		
+		//FIELD
+		addToWhereClause("field", "field");
+		
+		//COUNTY
+		addToWhereClause("county", "county");
+		
+		//TOWNSHIP
+		addToWhereClause("twp", "twp");
+		
+		//RANGE
+		addToWhereClause("rge", "rge");
+		
+		//SECTION
+		addToWhereClause("section_", "section_");
+		
+		//FORMATIONTD
+		addToWhereClause("formationtd","formationtd");
+		console.log(rge)
+		//SHAPE
+		//addToWhereClause("shape","shape");
+		
+		//query.where = whereclause
+		find.where = whereclause
+        find.execute(params, showResults);
+		}
+
+        function showResults(results) {
+		var result,attribs;
+		var s = ["<table border=\"1\"><thead><tr style=\"background-color:#ccc;\"><td>API NO</td><td>State Permit</td><td>Operator</td><td>County</td><td>Township</td><td>Range</td><td>Section</td><td>Depth (ft)</td><td>Formation at Depth</td></tr></thead><tbody id=\"WellInfo\">"];
+		dojo.forEach(results,function(result){
+		attribs = result.feature.attributes;
+		s.push("<tr><td>" + attribs.apino + "</td><td>" + attribs.otherid + "</td><td>" + attribs.operator + "</td><td>" + attribs.county + "</td><td>" + attribs.twp + "</td><td>" + attribs.rge + "</td><td>" + attribs.drillertotaldepth + "</td><td>" + attribs.formationtd + "</tr></td>");
+		});
+		s.push("</tbody></table>");
+		dojo.byId("tbl").innerHTML = s.join("");
+		}
+        */
+		
+		dojo.ready(init);
+      /*function showResults(results) {
+        var s = "";
+        for (var i=0, il=results.features.length; i<il; i++) {
+          var featureAttributes = results.features[i].attributes;
+          for (att in featureAttributes) {
+            s = s + "<b>" + att + ":</b>  " + featureAttributes[att] + "<br>";
+          }
+		  s = s + "<br>";
+        }
+        dom.byId("results").innerHTML = s;
+      }*/
+	  
+	  /*function updateGrid(featureSet){
+		
+		var data=[];
+		var grid = dijit.byId('grid');
+		dojo.forEach(featureSet, function (entry) {
+			var logs = [], 
+				las = [], 
+				folders = [],
+				relatedResource = entry.attributes.relatedresource === null ? "no value" : entry.attributes.relatedresource;
+				
+				
+				//relatedResource = entry.attributes.relatedresource || "";
+				//if (entry.attributes.relatedresource === null) {
+				//}
+			//if ( relatedResource.length >=4){
+			
+			
+			var raw = relatedResource.split("|");
+			raw.forEach(function (bit){
+				var resource = bit.split(", ");
+				if (resource[0] && resource[1]){
+				var url = resource[1].trim();
+				var name = resource[0].trim();
+				}
+				var anchor = "<li><a href='" + url + "' target='_blank'>" + name + "</a></li>";
+				if (url != null ){
+				if ( url.indexOf(".tif", url.length -4) !==-1){
+					logs.push(anchor);
+				}
+				if ( url.indexOf(".pdf", url.length -4) !==-1){
+					folders.push(anchor);
+				} 
+				if ( url.indexOf(".las", url.length -4) !==-1){
+					las.push(anchor);
+				}
+				}
+			});
+			//}
+			data.push({
+				objectid:entry.attributes.objectid,//0
+				apino:entry.attributes.apino,//1
+				otherid:entry.attributes.otherid,//2
+				operator:entry.attributes.operator,//3
+				county:entry.attributes.county,//4
+				twp:entry.attributes.twp,//5
+				rge:entry.attributes.rge,//6
+				//headeruri:entry.attributes.headeruri,//7
+				section_:entry.attributes.section_,//8
+				drillertotaldepth:entry.attributes.drillertotaldepth,//9
+				formationtd:entry.attributes.formationtd,//10
+				wellname:entry.attributes.wellname,//11
+				logField: '<ul>' + logs.join(" ") + '</ul>',
+				lasField: '<ul>' + las.join(" ") + '</ul>',
+				folderField: '<ul>' + folders.join(" ") + '</ul>'
+			});
+
+		});
+		var dataForGrid= {
+			items: data
+			};
+
+		var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
+		grid.setStore(store);
+	}
+
+	});*/
+	  </script>
+<style type="text/css">
+#tab_body {
+border:5px solid black;
+background-color:#F4A460;
+height:600px;
+width:1200px;
+}
+form table {
+border:2px solid black;
+margin-top:-2px;
+margin-left:10px;
+float:left;
+}
+#image_box {
+border:2px solid black;
+float:right;
+padding-right:10px;
+padding-top:10px;
+padding-left:10px;
+padding-bottom:10px;
+margin-top:10px;
+margin-right:10px;
+}
+#img_info {
+border-top:2px solid black;
+padding-bottom:-10px;
+padding-left:10px;
+padding-right:10px;
+margin-left:-10px;
+margin-right:-10px;
+}
+#search_info {
+border-left:2px solid black;
+border-right:2px solid black;
+border-top:2px solid black;
+border-bottom:2px solid black;
+width:586px;
+margin-top:10px;
+margin-left:10px;
+}
+#search_body {
+<!--
+border:2px solid black;
+width: 590px;
+-->
+}
+#results {
+background-color:#0000FF;
+padding:5px; 
+margin:5px;
+clear:both;
+}
+
+</style>
+
+</head>
+<body>
+<div id="tab_body">
+<div id="image_box">
+<image src="photos/Arizona_Meridians.jpg">
+<div id="img_info">
+<p>Map of Arizona State Meridians</p>
+</div>
+</div>
+
+
+<form method="post" action="">
+<div id="search_body">
+<div id="search_info">
+<p>
+Here be some info
+</p>
+</div>
+<table>
+<tr>
+<td class="label">
+<label for="apino">API Number</label>
+</td>
+<td>
+<input type="text" name="apino" id="apino" size="14" maxlength="14"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="otherid"> State Permit</label>
+</td>
+<td>
+<input type="text" name="otherid" size="4" maxlength="4"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="county">County</label>
+</td>
+<td>
+<select name="county" id="county">
+<option value=" "> </option>
+<option value="Apache">Apache</option>
+<option value="Cochise">Cochise</option>
+<option value="Coconino">Coconino</option>
+<option value="Gila">Gila</option>
+<option value="Graham">Graham</option>
+<option value="Greenlee">Greenlee</option>
+<option value="La Paz">La Paz</option>
+<option value="Maricopa">Maricopa</option>
+<option value="Mohave">Mohave</option>
+<option value="Navajo">Navajo</option>
+<option value="Pima">Pima</option>
+<option value="Pinal">Pinal</option>
+<option value="Santa Cruz">Santa Cruz</option>
+<option value="Yavapai">Yavapai</option>
+<option value="Yuma">Yuma</option>
+</select>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="field">Field Name</label>
+</td>
+<td>
+<input type="text" name="field" id="field" size="30" maxlength="30"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="twp">Township</label>
+</td>
+<td>
+<input type="text" name="twp" id="twp" size="4" maxlength="4"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="rge">Range</label>
+</td>
+<td>
+<input type="text" name="rge" id="rge" size="4" maxlength="4"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="section_">Section</label>
+</td>
+<td>
+<select name="section_" id="section_">
+<option value=""> </option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+<option value="32">32</option>
+<option value="33">33</option>
+<option value="34">34</option>
+<option value="35">35</option>
+<option value="36">36</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>
+<label for="operator">Operator</label>
+</td>
+<td>
+<input type="text" name="operator" id="operator" size="30" maxlength="30"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="wellname">Well Name</label>
+</td>
+<td>
+<input type="text" name="wellname" id="wellname" size="30" maxlength="30"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="status">Well Status</label>
+</td>
+<td>
+<!--<input type="text" name="status" size="20" maxlength="20"><br>-->
+<select name="status" id="status">
+<option value=""> </option>
+<option value="Dry hole">D = Dry hole</option>
+<option value="G = Gas well, producing">G = Gas well, producing</option>
+<option value="GP = Gas well, plugged and abandoned">GP = Gas well, plugged and abandoned</option>
+<option value="GS = Gas well, shut in">GS = Gas well, shut in</option>
+<option value="Helium well, completed, plugged and abandoned, no production record">HN = Helium well, completed, plugged and abandoned, no production record</option>
+<option value="HP = Helium well, completed, plugged and abandoned, production record">HP = Helium well, completed, plugged and abandoned, production record</option>
+<option value="HS = Helium well, completed, shut in">HS = Helium well, completed, shut in</option>
+<option value="JA = Test hole, junked and abandoned">JA = Test hole, junked and abandoned</option>
+<option value="O = Oil well, producing">O = Oil well, producing</option>
+<option value="OP = Oil well, plugged and abandoned">OP = Oil well, plugged and abandoned</option>
+<option value="OS = Oil well, shut in">OS = Oil well, shut in</option>
+<option value="OW = Oil well, converted to salt-water disposal">OW = Oil well, converted to salt-water disposal</option>
+<option value="PW = Salt-water disposal well, plugged and abandoned">PW = Salt-water disposal well, plugged and abandoned</option>
+<option value="S = Stratigraphic test"> S = Stratigraphic test</option>
+<option value="SA = Salt-mining well, plugged and abandoned"> SA = Salt-mining well, plugged and abandoned</option>
+<option value="SL = Storage well, liquefied petroleum gas">SL = Storage well, liquefied petroleum gas</option>
+<option value="SP = Storage well, liquefied petroleum gas, plugged and abandoned">SP = Storage well, liquefied petroleum gas, plugged and abandoned</option>
+<option value="TA = Test well, temporarily abandoned">TA = Test well, temporarily abandoned</option>
+<option value="TD = Geothermal well, dry, plugged and abandoned">TD = Geothermal well, dry, plugged and abandoned</option>
+<option value="TP = Geothermal; gradient well, plugged and abandoned">TP = Geothermal; gradient well, plugged and abandoned</option>
+<option value="WW = Water well">WW = Water well</option>
+</select>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="formationtd">Formation at Total Depth</label>
+</td>
+<td>
+<input type="text" name="formationtd" id="formationtd" size="30" maxlength="30"><br>
+</td>
+</tr>
+<tr>
+<td>
+<!---
+<input type="submit" value="Submit Search"/>
+-->
+<input type="button" id="doFindbtn" onclick="doFind()" value="Submit Search"/>
+</td>
+<td>
+<input type="reset" value="Reset Search"/>
+</td>
+</tr>
+</table>
+</div>
+<div id="results">
+</div>
+
+ <!--<div id="bottomPane"
+       data-dojo-type="dijit.layout.ContentPane"
+       data-dojo-props="region:'bottom'">
+	    https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html 
+		<table data-dojo-type="dojox.grid.DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%"> 
+          <thead> 
+            <tr>
+			  <th field="apino" width="auto">API No</th>
+			  <th field="otherid" width="auto">State Permit No</th>
+			  <th field="operator" width="auto">Operator</th>
+			  <th field="county" width="auto">County</th>
+			  <th field="twp" width="auto">Township</th>
+			  <th field="rge" width="auto">Range</th>
+			  <th field="section_" width="auto">Section</th>
+			  <th field="drillertotaldepth" width="auto">Depth (ft)</th>
+			  <th field="formationtd" width="auto">Formation at Depth</th>
+			  <th field="folderField" width="auto" >Well Folder</th>
+			  <th field="logField" width="auto" >Scanned Well Log</th>
+			  <th field="lasField" width="auto" >LAS Data</th>
+            </tr> 
+          </thead> 
+        </table> 
+	</div>--> 
+
+</form>
+
+</body>
+</html>
