@@ -72,13 +72,15 @@
 							</p>
 		<button data-dojo-type="dijit.form.Button" onClick="selectionToolbar.activate(esri.toolbars.Draw.EXTENT);">Select Wells</button>
 		<button data-dojo-type="dijit.form.Button" onClick="wellFeatureLayer.clearSelection();">Clear Selection</button><br>
+        <button data-dogo-type="dijit.form.Button" onClick="apiSearch();">Search by API</button>
+		<input type="text" id="textSearch" value="02-017-05048"/>
 	</div>
 	
 	<!--API Search Bar-->
-	<div id="apisearch">
+	<!--<div id="apisearch" class="apisearch">
 		<button data-dogo-type="dijit.form.Button" onClick="apiSearch()">Search by API</button>
 		<input type="text" id="textSearch" value="02-017-05048"/>
-	</div>
+	</div>-->
 	<!--Legend-->
     <div data-dojo-type="dijit.layout.ContentPane" id="legendPane"
          data-dojo-props="title:'Legend', selected:true">
