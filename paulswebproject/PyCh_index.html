@@ -21,20 +21,33 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 	esri.tasks.FindTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer");
 		params = new esri.tasks.FindParameters();
 		params.layerIds = [0];
-		params.searchFields = ["apino"];
+		params.searchFields = ["apino", "county"]//,"operator","wellname","status","field","county","otherid","twp","range","section_","formationtd"];
+        //params.searchFields = ["apino"];
 		}
 	//on(dom.byId("Find"), "click", Find);	
 		function doFind() {
-            params.searchText = dojo.byId("apino").value;
+        //params.searchText = dojo.byId("apinum","operatorid","wellnameid","statusid","fieldid","countyid","stateperm","twpid","rgeid","sectionid","formationtdid").value;
+            params.searchText = dojo.byId("apinum").value;
+/*            params.searchText = dojo.byId("operatorid").value;
+            params.searchText = dojo.byId("wellnameid").value;
+            params.searchText = dojo.byId("statusid").value;
+            params.searchText = dojo.byId("fieldid").value;
+            params.searchText = dojo.byId("countyid").value;
+            params.searchText = dojo.byId("stateperm").value;
+            params.searchText = dojo.byId("twpid").value;
+            params.searchText = dojo.byId("rgeid").value;
+            params.searchText = dojo.byId("sectionid").value;
+            params.searchText = dojo.byId("formationid").value;
+*/
             find.execute(params, showResults);
-	//	var whereclause = "apino = 02-001-05159";
+		/*var whereclause = "apino = 02-001-05159";
 		}
-//http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/find?searchText=02-001-20132&contains=true&searchFields=&sr=&layers=0
+      http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer
         function showResults(results) {
             console.log(results);
         }
 
-/*
+
 		function addToWhereClause(inputEleId, fieldName) {
 			var content = dom.byId(inputEleId).value;
 			if (content !== "") {
@@ -43,44 +56,44 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 		
 		// Start moving through the inputs
 		// APINO
-		addToWhereClause("apino", "apino");
+		addToWhereClause("apinum", "apino");
 		
 		// OPERATOR
-		addToWhereClause("operator", "operator");
+		addToWhereClause("operatorid", "operator");
 		
 		//WELLNAME
-		addToWhereClause("wellname", "wellname");
+		addToWhereClause("wellnameid", "wellname");
 		
 		//STATUS
-		addToWhereClause("status", "status");
+		addToWhereClause("statusid", "status");
 		
 		//FIELD
-		addToWhereClause("field", "field");
+		addToWhereClause("fieldid", "field");
 		
 		//COUNTY
-		addToWhereClause("county", "county");
+		addToWhereClause("countyid", "county");
 		
 		//TOWNSHIP
-		addToWhereClause("twp", "twp");
+		addToWhereClause("twpid", "twp");
 		
 		//RANGE
-		addToWhereClause("rge", "rge");
+		addToWhereClause("rgeid", "rge");
 		
 		//SECTION
-		addToWhereClause("section_", "section_");
+		addToWhereClause("sectionid", "section_");
 		
 		//FORMATIONTD
-		addToWhereClause("formationtd","formationtd");
-		console.log(rge)
-		//SHAPE
-		//addToWhereClause("shape","shape");
-		
-		//query.where = whereclause
+		addToWhereClause("formationtdid","formationtd");
+
+        //OTHERID
+        adToWhereClause("stateperm","otherid");
+
 		find.where = whereclause
-        find.execute(params, showResults);
+        find.execute(params, showResults);*/
 		}
 
         function showResults(results) {
+            console.log(results);
 		var result,attribs;
 		var s = ["<table border=\"1\"><thead><tr style=\"background-color:#ccc;\"><td>API NO</td><td>State Permit</td><td>Operator</td><td>County</td><td>Township</td><td>Range</td><td>Section</td><td>Depth (ft)</td><td>Formation at Depth</td></tr></thead><tbody id=\"WellInfo\">"];
 		dojo.forEach(results,function(result){
@@ -90,7 +103,7 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 		s.push("</tbody></table>");
 		dojo.byId("tbl").innerHTML = s.join("");
 		}
-        */
+
 		
 		dojo.ready(init);
       /*function showResults(results) {
@@ -248,26 +261,26 @@ Here be some info
 <table>
 <tr>
 <td class="label">
-<label for="apino">API Number</label>
+<label for="apinum">API Number</label>
 </td>
 <td>
-<input type="text" name="apino" id="apino" size="14" maxlength="14"><br>
+<input type="text" name="apino" id="apinum" size="14" maxlength="14"><br>
 </td>
 </tr>
 <tr>
 <td class="label">
-<label for="otherid"> State Permit</label>
+<label for="stateperm"> State Permit</label>
 </td>
 <td>
-<input type="text" name="otherid" size="4" maxlength="4"><br>
+<input type="text" name="otherid" id="stateperm" size="4" maxlength="4"><br>
 </td>
 </tr>
 <tr>
 <td class="label">
-<label for="county">County</label>
+<label for="countyid">County</label>
 </td>
 <td>
-<select name="county" id="county">
+<select name="county" id="countyid">
 <option value=" "> </option>
 <option value="Apache">Apache</option>
 <option value="Cochise">Cochise</option>
@@ -289,34 +302,34 @@ Here be some info
 </tr>
 <tr>
 <td class="label">
-<label for="field">Field Name</label>
+<label for="fieldid">Field Name</label>
 </td>
 <td>
-<input type="text" name="field" id="field" size="30" maxlength="30"><br>
+<input type="text" name="field" id="fieldid" size="30" maxlength="30"><br>
 </td>
 </tr>
 <tr>
 <td class="label">
-<label for="twp">Township</label>
+<label for="twpid">Township</label>
 </td>
 <td>
-<input type="text" name="twp" id="twp" size="4" maxlength="4"><br>
+<input type="text" name="twp" id="twpid" size="4" maxlength="4"><br>
 </td>
 </tr>
 <tr>
 <td class="label">
-<label for="rge">Range</label>
+<label for="rgeid">Range</label>
 </td>
 <td>
-<input type="text" name="rge" id="rge" size="4" maxlength="4"><br>
+<input type="text" name="rge" id="rgeid" size="4" maxlength="4"><br>
 </td>
 </tr>
 <tr>
 <td class="label">
-<label for="section_">Section</label>
+<label for="sectionid">Section</label>
 </td>
 <td>
-<select name="section_" id="section_">
+<select name="section_" id="sectionid">
 <option value=""> </option>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -359,27 +372,27 @@ Here be some info
 </tr>
 <tr>
 <td>
-<label for="operator">Operator</label>
+<label for="operatorid">Operator</label>
 </td>
 <td>
-<input type="text" name="operator" id="operator" size="30" maxlength="30"><br>
+<input type="text" name="operator" id="operatorid" size="30" maxlength="30"><br>
 </td>
 </tr>
 <tr>
 <td class="label">
-<label for="wellname">Well Name</label>
+<label for="wellnameid">Well Name</label>
 </td>
 <td>
-<input type="text" name="wellname" id="wellname" size="30" maxlength="30"><br>
+<input type="text" name="wellname" id="wellnameid" size="30" maxlength="30"><br>
 </td>
 </tr>
 <tr>
 <td class="label">
-<label for="status">Well Status</label>
+<label for="statusid">Well Status</label>
 </td>
 <td>
 <!--<input type="text" name="status" size="20" maxlength="20"><br>-->
-<select name="status" id="status">
+<select name="status" id="statusid">
 <option value=""> </option>
 <option value="Dry hole">D = Dry hole</option>
 <option value="G = Gas well, producing">G = Gas well, producing</option>
@@ -407,17 +420,14 @@ Here be some info
 </tr>
 <tr>
 <td class="label">
-<label for="formationtd">Formation at Total Depth</label>
+<label for="formationtdid">Formation at Total Depth</label>
 </td>
 <td>
-<input type="text" name="formationtd" id="formationtd" size="30" maxlength="30"><br>
+<input type="text" name="formationtd" id="formationtdid" size="30" maxlength="30"><br>
 </td>
 </tr>
 <tr>
 <td>
-<!---
-<input type="submit" value="Submit Search"/>
--->
 <input type="button" id="doFindbtn" onclick="doFind()" value="Submit Search"/>
 </td>
 <td>
