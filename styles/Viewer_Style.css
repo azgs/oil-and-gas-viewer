@@ -3,29 +3,54 @@ html{
 }
  body {
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0.46, rgb(250, 243, 232)), color-stop(0.67, rgb(244, 226, 207)), color-stop(0.87, rgb(233, 202, 161))) no-repeat;
+    background-image: linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
+    background-image: -o-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
+    background-image: -moz-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
+    background-image: -webkit-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
+    background-image: -ms-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
     height: 95%;
-      width: 100%;
+     width: 100%;
     margin: 0;
 
     }
+    #titleBar{
+        position:relative;
+        overflow: hidden;
+    }
+
+    #titleText{
+     padding-left: 1px;
+     text-align: left;
+     z-index: 5;
+        position: absolute;
+        left: 1%;
+        font-family: "Helvetica Nueue","Trebuchet MS",Arial,"Nimbus Sans L",FreeSans,sans-serif;
+        font-weight: bold;
+        font-size: 125%;
+        overflow: inherit;
+    }
+    #titleImg{
+        position: absolute;
+        right: 1%;
+        top: 5%;
+        z-index: 5;
+        padding-right: 1px;
+        overflow: inherit;
+    }
 
     #navigationMenu {
-        background-image: -webkit-gradient(
-	linear,
-	left bottom,
-	left top,
-	color-stop(0.08, #B87147),
-	color-stop(0.54, #9B440E)
-    );
-/*background-color: #9b430e;*/
-        margin:0;
-        border-top-width: 1px;
-        border-right-width: 1px;
-        border-left-width: 1px;
-        border-bottom-width: 1px;
-        padding: 1px;
+        background: -webkit-gradient(linear,left bottom,left top,color-stop(0.08, #B87147),color-stop(0.54, #9B440E) );
+        background: linear-gradient(bottom, #B87047 8%, #9B440E 54%);
+        background: -o-linear-gradient(bottom, #B87047 8%, #9B440E 54%);
+        background: -moz-linear-gradient(bottom, #B87047 8%, #9B440E 54%);
+        background: -ms-linear-gradient(bottom, #B87047 8%, #9B440E 54%);
+
+        border: 1px black;
+        padding:1px;
         color: #feffff;
         text-align: center;
+        z-index: 5;
+
     }
 
     #navigationMenu li {
