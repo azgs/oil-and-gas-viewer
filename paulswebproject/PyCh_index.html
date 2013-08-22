@@ -10,13 +10,42 @@ maximum-scale=1, user-scalable=no">
 <title>Text Search</title>
 <link rel="stylesheet"
 href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
-<script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+<script src="http://js.arcgis/3.6/"></script>
     <script>
-      dojo.require("esri.tasks.find");
+      dojo.require("esri.tasks.query");
       dojo.require("esri.map");
 	
-	var find, params;
-	function init() {
+	var queryTask, query;
+    require([
+      "esri/tasks/query",
+    "esri/tasks/QueryTask",
+            "dojo/dom", "dojo/on",
+    "dojo/domReady!"
+          ], function(
+            Query, QueryTask,
+            dom, on
+            ){
+              queryTask = new
+    QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer");
+
+            query = new Query();
+            query.returnGeometry = false;
+            query.outFields =
+    ["apino", "county"];//,"operator","wellname","status","field","county","otherid","twp","range","section_","formationtd"];
+
+        on(dom.byId("execute"),"click", execute);
+
+        function execute() {
+            query.text =
+    //dom.byId("apinum","operatorid","wellnameid","statusid","fieldid","countyid","stateperm","twpid","rgeid","sectionid","formationtdid").value;
+    dom.byId("apinum","county");
+            //execute query
+            queryTask.execute(query,showResults);
+        }
+
+
+
+	/*function init() {
 		find = new
 	esri.tasks.FindTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer");
 		params = new esri.tasks.FindParameters();
@@ -38,8 +67,8 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
             params.searchText = dojo.byId("rgeid").value;
             params.searchText = dojo.byId("sectionid").value;
             params.searchText = dojo.byId("formationid").value;
-*/
-            find.execute(params, showResults);
+
+            find.execute(params, showResults);*/
 		/*var whereclause = "apino = 02-001-05159";
 		}
       http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer
@@ -90,9 +119,9 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 
 		find.where = whereclause
         find.execute(params, showResults);*/
-		}
+		},
 
-        function showResults(results) {
+        /*function showResults(results) {
             console.log(results);
 		var result,attribs;
 		var s = ["<table border=\"1\"><thead><tr style=\"background-color:#ccc;\"><td>API NO</td><td>State Permit</td><td>Operator</td><td>County</td><td>Township</td><td>Range</td><td>Section</td><td>Depth (ft)</td><td>Formation at Depth</td></tr></thead><tbody id=\"WellInfo\">"];
@@ -102,11 +131,10 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 		});
 		s.push("</tbody></table>");
 		dojo.byId("tbl").innerHTML = s.join("");
-		}
-
-		
-		dojo.ready(init);
-      /*function showResults(results) {
+		}*/
+		//dojo.ready(init);
+      function showResults(results) {
+          console.log(results);
         var s = "";
         for (var i=0, il=results.features.length; i<il; i++) {
           var featureAttributes = results.features[i].attributes;
@@ -116,9 +144,8 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 		  s = s + "<br>";
         }
         dom.byId("results").innerHTML = s;
-      }*/
-	  
-	  /*function updateGrid(featureSet){
+      }
+      /*function updateGrid(featureSet){
 		
 		var data=[];
 		var grid = dijit.byId('grid');
@@ -428,7 +455,7 @@ Here be some info
 </tr>
 <tr>
 <td>
-<input type="button" id="doFindbtn" onclick="doFind()" value="Submit Search"/>
+<input type="button" id="execute" onclick="execute" value="Submit Search"/>
 </td>
 <td>
 <input type="reset" value="Reset Search"/>
