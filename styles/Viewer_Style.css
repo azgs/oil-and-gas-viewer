@@ -2,15 +2,15 @@ html{
     height: 100%;
 }
  body {
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0.46, rgb(250, 243, 232)), color-stop(0.67, rgb(244, 226, 207)), color-stop(0.87, rgb(233, 202, 161))) no-repeat;
-    background-image: linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
-    background-image: -o-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
-    background-image: -moz-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
-    background-image: -webkit-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
-    background-image: -ms-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
-    height: 95%;
-     width: 100%;
-    margin: 0;
+        background: -webkit-gradient(linear, left bottom, left top, color-stop(0.46, rgb(250, 243, 232)), color-stop(0.67, rgb(244, 226, 207)), color-stop(0.87, rgb(233, 202, 161))) no-repeat;
+        background: linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
+        background: -o-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
+        background: -moz-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
+        background: -webkit-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
+        background: -ms-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
+        height: 95%;
+        width: 100%;
+        margin: 0;
 
     }
     #titleBar{
@@ -19,9 +19,9 @@ html{
     }
 
     #titleText{
-     padding-left: 1px;
-     text-align: left;
-     z-index: 5;
+        padding-left: 1px;
+        text-align: left;
+        z-index: 5;
         position: absolute;
         left: 1%;
         font-family: "Helvetica Nueue","Trebuchet MS",Arial,"Nimbus Sans L",FreeSans,sans-serif;
@@ -56,12 +56,14 @@ html{
     #navigationMenu li {
         display:inline;
         padding: 25px;
+        /*margin-right: 50px;
+        margin-left: 265px;*/
 
     }
 
     .mapMenus a:link{
         color: #feffff;
-         text-decoration: none;
+        text-decoration: none;
      }
 
     .mapMenus a:visited{
@@ -91,7 +93,7 @@ html{
     }
 	
     #legendPane {
-      border: solid #e7dac4 2px;
+        border: solid #e7dac4 2px;
         background-color: #f3e6d0;
         font-size: 80%;
     }

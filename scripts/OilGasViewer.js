@@ -12,8 +12,9 @@
     dojo.require("dijit.layout.ContentPane");
     dojo.require("esri.dijit.OverviewMap");
     dojo.require("dojo.store.Memory");
+    dojo.require("esri.geometry.Extent");
 
-    var findParams;
+    var findParams,map;
 
     function init() {
 
@@ -191,9 +192,11 @@
         //get mapPoint from event
         //The map is in web mercator - modify the map point to display the results in geographic
         var mp = esri.geometry.webMercatorToGeographic(evt.mapPoint);
+
         //display mouse coordinates
         dojo.byId("info").innerHTML ="Cursor Coordinates:<br>" + "Long. " + mp.x.toFixed(3) + ", " + "Lat. " + mp.y.toFixed(3);
       }
+
 
     //Listens for selection box and initializes the buttons
     function initSelectToolbar(map) {
@@ -281,5 +284,10 @@
         var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
         grid.setStore(store);
     }
+
+    /*function zoomExtent(){
+        var initExtent = new esri.geometry.Extent(-118.644,30.872,-104.142,37.986,new esri.SpatialReference({"wkid":4326}));
+        map.setExtent(initExtent);
+    }*/
 
     dojo.ready(init);
