@@ -18,7 +18,7 @@
 
     function init() {
 
-      var map = new esri.Map("map", {
+      map = new esri.Map("map", {
         basemap: "topo",
         center: [-111.3877, 34.5],
         zoom: 7
@@ -283,6 +283,64 @@
 
         var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
         grid.setStore(store);
+    }
+
+    function makeZoomButton(id){//id is objectid
+        var zBtn = "<div data-dojo-type='dijit.form.Button'><img src='photos/bg_magnify.png'";
+        zBtn = zBtn + " width='18' height='18'";
+        zBtn = zBtn + " onClick=\"zoomRow('"+id+"')\"></div>"; //activates zoomRow function
+        return zBtn;
+      }
+
+   /* function zoomRow(id){
+        var grid = dijit.byId('grid');
+        var clickedWell = grid.getItem(id);
+        var selectedWell;
+        var distance = 500;
+        var newExtent = new esri.geometry.Extent({
+            "xmin": pnt.x - distance,
+            "ymin": pnt.y - distance,
+            "xmax": pnt.x + distance,
+            "ymax": pnt.y + distance,
+            "spatialReference":{"wkid":4326}
+        });
+
+
+        dojo.forEach(map.graphics.graphics,function(graphic){
+          if((graphic.attributes) && graphic.attributes.BUILDING === clickedWell){
+            selectedWell = graphic;
+            return;
+          }
+        });
+        var wellExtent = selectedWell.geometry.getExtent();
+        map.setExtent(wellExtent);
+        selectionLayer.clear();
+       // var wellExtent = featureLayer[0].geometry.getExtent().expand(5.0);
+        //map.setExtent(wellExtent);
+    }*/
+
+    function zoomRow(id) {
+        //console.log(id);
+        var distance = 500;
+        var newExtent = new esri.geometry.Extent({
+            "xmin": pnt.x - distance,
+            "ymin": pnt.y - distance,
+            "xmax": pnt.x + distance,
+            "ymax": pnt.y + distance,
+            "spatialReference":{"wkid":4326}
+        });
+
+      dojo.some(wellFeatureLayer.graphic,function(graphic){
+        if (graphic.attributes.ObjectID.toString() === id) {
+        console.log(graphic.attributes);
+          var selectedWell = new esri.Graphic(graphic.geometry).setAttributes(
+              graphic.attributes);
+          selectionLayer.add(selectedWell);
+          var wellExtent = selectedWell.geometry.getExtent().expand(5.0);
+          map.setExtent(wellExtent);
+          return true;
+        }
+      });
     }
 
     /*function zoomExtent(){
