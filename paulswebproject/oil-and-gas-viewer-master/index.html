@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9, IE=10">
+  <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
+  on iOS devices-->
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+  <title>Oil and Gas Viewer</title>
+
+
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css">
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css" />
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/tundra/tundra.css"> 
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dojox/grid/resources/Grid.css">     
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dojox/grid/resources/tundraGrid.css"> 
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css">
+  <link rel="stylesheet" href="styles/Viewer_Style.css">
+<!-- <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_pbm0lsQQJ7A7WCCIMgxLho6mI_kBNgznNUWmTWcnfoE.css" media="all" />
+ <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_lywdrXysQ4P-qq1X4UHOysGzCh3sY0iKbjWgR5XEKTE.css" media="all" />
+ <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_kKWVoh6LKHSOxBh_dVKdRCBpUARTX9RZG8ojal_Kyck.css" media="all" /> 
+ <link rel="stylesheet" href="http://azogcc.az.gov/sites/azogcc.az.gov/files/css/css_VFG-WGr9eSVwnsjvKFtAVu65PscGVgPgL6gnn7iNBHY.css" media="all" /> 
+ -->
+  <style>
+
+  </style>  
+  
+  <script>var dojoConfig = { parseOnLoad:true };</script>
+  <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+  <script src="scripts/OilGasViewer.js"></script>
+
+
+</head>
+
+<body class="tundra">
+
+<div id="titleBar">
+<div id="titleText" class="mapMenus">
+    <a href='http://azogcc.az.gov/'>ARIZONA OIL AND GAS <br>CONSERVATION COMMISSION</a>
+</div>
+
+<div id="navigationMenu" class="mapMenus">
+    <ul>
+        <li><a href='http://azogcc.az.gov/'>Home</a></li>
+        <li><a href='http://azgs.az.gov/'>AZGS</a></li>
+        <li><a href='http://welldata.azogcc.az.gov/OilGasViewer.html'>Map Search</a></li>
+        <li><a href='http://welldata.azogcc.az.gov/PyCh_index.html'>Text Search</a></li>
+    </ul>
+</div>
+    <div id="titleImg" class="mapMenus">
+        <img src="photos/AZ_state_seal2.png" height="49" width="49">
+    </div>
+</div>
+ 
+ 
+<!--Everything not in the Header-->
+<div id="home"
+     data-dojo-type="dijit.layout.BorderContainer"
+     data-dojo-props="design:'headline', gutters:true"
+     style="width: 100%; height: 100%; margin: 0;">
+
+	 <div id="map"
+       data-dojo-type="dijit.layout.ContentPane"
+       data-dojo-props="region:'center'"
+       style="overflow:hidden;">	   
+  </div>
+  
+  <div id="lefttPane"
+	   data-dojo-type="dijit.layout.ContentPane"
+	   data-dojo-props="region:'left'">
+	   <!--<span id="info" style="position:absolute; left:15px; bottom:2%; z-index:0;"></span>
+
+	   <!--<div id="scalebar" style="position:relative; left:1%; bottom:-95%;"></div>-->
+	
+	
+	
+	<!--Select and Clear Buttons-->
+	<div id="buttons">
+		<p>
+							<strong>Map Search:</strong> Press the Select Wells button and then draw a box around the area of interest.<br>
+                            <strong>Search by API:</strong> Enter the API number in the box using the format "00-000-00000" and press Search by API.
+							<strong>Overview Map:</strong> Click the arrow in the upper right corner to activate the map.<br>
+							<strong>Map Navigation:</strong> Use the mouse wheel to zoom in and out. Click and hold to pan.
+							</p>
+		<button data-dojo-type="dijit.form.Button" onClick="selectionToolbar.activate(esri.toolbars.Draw.EXTENT);">Select Wells</button>
+		<button data-dojo-type="dijit.form.Button" onClick="wellFeatureLayer.clearSelection();">Clear Selection</button><br>
+        <!--<button data-dogo-type="dijit.form.Button" onClick="apiSearch();">Search by API</button>
+        <input type="text" id="textSearch" placeholder="00-000-00000"/>-->
+	</div>
+	<span id="info" ></span>
+
+	<!--Legend-->
+    <div data-dojo-type="dijit.layout.ContentPane" id="legendPane"
+         data-dojo-props="title:'Legend', selected:true">
+      <div id="legendDiv"></div>	  
+    </div>
+         
+  </div>
+  
+  
+  <div id="bottomPane"
+       data-dojo-type="dijit.layout.ContentPane"
+       data-dojo-props="region:'bottom'">
+	   <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
+    <table data-dojo-type="dojox.grid.DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%"> 
+          <thead> 
+            <tr>
+			  <th field="apino" width="auto">API No</th>
+			  <th field="otherid" width="auto">State Permit No</th>
+			  <th field="wellname" width="auto">Operator</th>
+			  <th field="county" width="auto">County</th>
+			  <th field="twp" width="auto">Township</th>
+			  <th field="rge" width="auto">Range</th>
+			  <th field="section_" width="auto">Section</th>
+			  <th field="drillertotaldepth" width="auto">Depth (ft)</th>
+			  <th field="formationtd" width="auto">Formation at Depth</th>
+			  <th field="folderField" width="auto" >Well Folder</th>
+			  <th field="logField" width="auto" >Scanned Well Log</th>
+			  <th field="lasField" width="auto" >LAS Data</th>
+            </tr> 
+          </thead> 
+        </table> 
+
+  </div>
+
+</div>
+
+
+
+
+  <span id="messages"></span>
+  
+</body>
+</html>
+

@@ -1,0 +1,10 @@
+http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer//find?f=json&searchText=Kansas&contains=true&returnGeometry=false&layers=2&searchFields=STATE_NAME%2CSTATE_FIPS&callback=dojo.io.script.jsonp_dojoIoScript1._jsonpCallback
+
+
+
+
+http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer//find?f=json&searchText=02-025-05014&contains=true&returnGeometry=false&layers=0&searchFields=apino
+
+
+
+http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/0/query?f=json&where=POP1990%20%3E%20500000&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=CITY_NAME%2CSTATE_NAME%2CPOP1990

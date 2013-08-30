@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible"
+content="IE=7,IE=9">
+	<meta name="viewport" content="initial-scale=1,
+maximum-scale=1, user-scalable=no">
+
+    <title>Text Search</title>
+<link rel="stylesheet"
+href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
+<script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+<script src="Scripts/App.js"></script>
+
+
+
+<link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css">
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css" />
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/tundra/tundra.css">
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dojox/grid/resources/Grid.css">
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dojox/grid/resources/tundraGrid.css">
+  <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css">
+   <link rel="stylesheet" href="Styles/Base.css">
+
+
+<style type="text/css">
+
+
+
+
+</style>
+
+</head>
+<body>
+
+<div id="tab_body">
+<div id="titleBar">
+<div id="titleText" class="mapMenus">
+    <a href='http://azogcc.az.gov/'>ARIZONA OIL AND GAS <br>CONSERVATION COMMISSION</a>
+</div>
+    <div id="titleImg" class="mapMenus">
+        <a href='http://azgs.az.gov/'><img src="photos/AZ_state_seal2.png" height="49" width="49"></a>
+    </div>
+</div>
+<div id="navigationMenu" class="mapMenus">
+    <ul>
+        <li><a href='http://azogcc.az.gov/'>Home</a></li>
+        <li><a href='http://azgs.az.gov/'>AZGS</a></li>
+        <li><a href='http://welldata.azogcc.az.gov/OilGasViewer.html'>Map Search</a></li>
+        <li><a href='http://welldata.azogcc.az.gov/PyCh_index.html'>Text Search</a></li>
+    </ul>
+</div>
+<div id="image_box">
+<image src="photos/Arizona_Meridians.jpg">
+<div id="img_info">
+<p>Map of Arizona State Meridians</p>
+</div>
+</div>
+
+
+<form method="post" action="">
+<div id="search_body">
+<div id="search_info">
+<p>
+<span id="TextSearch">Text Search:</span> Complete one or multiple fields and press the Submit Search button to search for wells based on their attributes. Selecting LAS data will open the LAS data in a text file. The selected LAS data can be saved and downloaded by using the save page as function.
+</p>
+</div>
+<table>
+<tr>
+<td class="label">
+<label for="apinum">API Number</label>
+</td>
+<td>
+<input type="text" name="apino" id="apinum" size="14" maxlength="14"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="stateperm"> State Permit</label>
+</td>
+<td>
+<input type="text" name="otherid" id="stateperm" size="4" maxlength="4"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="countyid">County</label>
+</td>
+<td>
+<select name="county" id="countyid">
+<option value=" "> </option>
+<option value="Apache">Apache</option>
+<option value="Cochise">Cochise</option>
+<option value="Coconino">Coconino</option>
+<option value="Gila">Gila</option>
+<option value="Graham">Graham</option>
+<option value="Greenlee">Greenlee</option>
+<option value="La Paz">La Paz</option>
+<option value="Maricopa">Maricopa</option>
+<option value="Mohave">Mohave</option>
+<option value="Navajo">Navajo</option>
+<option value="Pima">Pima</option>
+<option value="Pinal">Pinal</option>
+<option value="Santa Cruz">Santa Cruz</option>
+<option value="Yavapai">Yavapai</option>
+<option value="Yuma">Yuma</option>
+</select>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="fieldid">Field Name</label>
+</td>
+<td>
+<input type="text" name="field" id="fieldid" size="30" maxlength="30"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="twpid">Township</label>
+</td>
+<td>
+<input type="text" name="twp" id="twpid" size="4" maxlength="4"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="rgeid">Range</label>
+</td>
+<td>
+<input type="text" name="rge" id="rgeid" size="4" maxlength="4"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="sectionid">Section</label>
+</td>
+<td>
+<select name="section_" id="sectionid">
+<option value=""> </option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+<option value="32">32</option>
+<option value="33">33</option>
+<option value="34">34</option>
+<option value="35">35</option>
+<option value="36">36</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>
+<label for="operatorid">Operator</label>
+</td>
+<td>
+<input type="text" name="operator" id="operatorid" size="30" maxlength="30"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="wellnameid">Well Name</label>
+</td>
+<td>
+<input type="text" name="wellname" id="wellnameid" size="30" maxlength="30"><br>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="statusid">Well Status</label>
+</td>
+<td>
+<!--<input type="text" name="status" size="20" maxlength="20"><br>-->
+<select name="status" id="statusid">
+<option value=""> </option>
+<option value="Dry hole">D = Dry hole</option>
+<option value="G = Gas well, producing">G = Gas well, producing</option>
+<option value="GP = Gas well, plugged and abandoned">GP = Gas well, plugged and abandoned</option>
+<option value="GS = Gas well, shut in">GS = Gas well, shut in</option>
+<option value="Helium well, completed, plugged and abandoned, no production record">HN = Helium well, completed, plugged and abandoned, no production record</option>
+<option value="HP = Helium well, completed, plugged and abandoned, production record">HP = Helium well, completed, plugged and abandoned, production record</option>
+<option value="HS = Helium well, completed, shut in">HS = Helium well, completed, shut in</option>
+<option value="JA = Test hole, junked and abandoned">JA = Test hole, junked and abandoned</option>
+<option value="O = Oil well, producing">O = Oil well, producing</option>
+<option value="OP = Oil well, plugged and abandoned">OP = Oil well, plugged and abandoned</option>
+<option value="OS = Oil well, shut in">OS = Oil well, shut in</option>
+<option value="OW = Oil well, converted to salt-water disposal">OW = Oil well, converted to salt-water disposal</option>
+<option value="PW = Salt-water disposal well, plugged and abandoned">PW = Salt-water disposal well, plugged and abandoned</option>
+<option value="S = Stratigraphic test"> S = Stratigraphic test</option>
+<option value="SA = Salt-mining well, plugged and abandoned"> SA = Salt-mining well, plugged and abandoned</option>
+<option value="SL = Storage well, liquefied petroleum gas">SL = Storage well, liquefied petroleum gas</option>
+<option value="SP = Storage well, liquefied petroleum gas, plugged and abandoned">SP = Storage well, liquefied petroleum gas, plugged and abandoned</option>
+<option value="TA = Test well, temporarily abandoned">TA = Test well, temporarily abandoned</option>
+<option value="TD = Geothermal well, dry, plugged and abandoned">TD = Geothermal well, dry, plugged and abandoned</option>
+<option value="TP = Geothermal; gradient well, plugged and abandoned">TP = Geothermal; gradient well, plugged and abandoned</option>
+<option value="WW = Water well">WW = Water well</option>
+</select>
+</td>
+</tr>
+<tr>
+<td class="label">
+<label for="formationtdid">Formation at Total Depth</label>
+</td>
+<td>
+<input type="text" name="formationtd" id="formationtdid" size="30" maxlength="30"><br>
+</td>
+</tr>
+<tr>
+<td>
+<input type="button" id="execute" onclick="execute" value="Submit Search"/>
+</td>
+<td>
+<input type="reset" value="Reset Search"/>
+</td>
+</tr>
+</table>
+</div>
+<div id="results">
+        data-dojo-type="dijit.layout.ContentPane"
+       data-dojo-props="region:'bottom'">
+	   <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
+    <table data-dojo-type="dojox.grid.DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%">
+          <thead>
+            <tr>
+			  <th field="apino" width="auto">API No</th>
+			  <th field="otherid" width="auto">State Permit No</th>
+			  <th field="wellname" width="auto">Operator</th>
+			  <th field="county" width="auto">County</th>
+			  <th field="twp" width="auto">Township</th>
+			  <th field="rge" width="auto">Range</th>
+			  <th field="section_" width="auto">Section</th>
+			  <th field="drillertotaldepth" width="auto">Depth (ft)</th>
+			  <th field="formationtd" width="auto">Formation at Depth</th>
+			  <th field="folderField" width="auto" >Well Folder</th>
+			  <th field="logField" width="auto" >Scanned Well Log</th>
+			  <th field="lasField" width="auto" >LAS Data</th>
+            </tr>
+          </thead>
+        </table>
+</div>
+
+</form>
+
+</body>
+</html>

@@ -75,10 +75,10 @@ href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
 		}
 		function showResults(results) {
 		var result,attribs;
-		var s = ["<table border=\"1\"><thead><tr style=\"background-color:#ccc;\"><td>API NO</td><td>State Permit</td><td>Operator</td><td>County</td><td>Township</td><td>Range</td><td>Section</td><td>Depth (ft)</td><td>Formation at Depth</td></tr></thead><tbody id=\"WellInfo\">"];
+		var s = ["<table border=\"1\"><thead><tr style=\"background-color:#ccc;\"><td>State Name</td><td>FIPS</td><td>Population (1999)</td></tr></thead><tbody id=\"states\">"];
 		dojo.forEach(results,function(result){
 		attribs = result.feature.attributes;
-		s.push("<tr><td>" + attribs.apino + "</td><td>" + attribs.otherid + "</td><td>" + attribs.operator + "</td><td>" + attribs.county + "</td><td>" + attribs.twp + "</td><td>" + attribs.rge + "</td><td>" + attribs.drillertotaldepth + "</td><td>" + attribs.formationtd + "</tr></td>");
+		s.push("<tr><td>" + attribs.apino + "</td><td>" + attribs.
 		});
 		s.push("</tbody></table>");
 		dojo.byId("tbl").innerHTML = s.join("");
