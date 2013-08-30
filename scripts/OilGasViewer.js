@@ -233,7 +233,7 @@
         dojo.forEach(featureSet, function (entry) {
             //if related geographic then related = entry.att.related
             // else api search related= entry.feature.att.related
-            console.log(entry);
+           // console.log(entry);
             var logs = [],
                 las = [],
                 folders = [],
@@ -292,33 +292,34 @@
         return zBtn;
       }
 
-   /* function zoomRow(id){
+    function zoomRow(id){
         var grid = dijit.byId('grid');
         var clickedWell = grid.getItem(id);
-        var selectedWell;
-        var distance = 500;
+        var selectedWell = map.graphics;
+        var distance = 1000;
         var newExtent = new esri.geometry.Extent({
-            "xmin": pnt.x - distance,
-            "ymin": pnt.y - distance,
-            "xmax": pnt.x + distance,
-            "ymax": pnt.y + distance,
-            "spatialReference":{"wkid":4326}
+            "xmin": selectedWell.x - distance,
+            "ymin": selectedWell.y - distance,
+            "xmax": selectedWell.x + distance,
+            "ymax": selectedWell.y + distance,
+            "spatialReference":{"wkid":102100}
         });
 
-
+        console.log(map.graphics.graphics);
         dojo.forEach(map.graphics.graphics,function(graphic){
-          if((graphic.attributes) && graphic.attributes.BUILDING === clickedWell){
-            selectedWell = graphic;
+            console.log(graphic);
+          if((graphic.attributes) && graphic.attributes.FID === clickedWell.FID){
+            selectedWell = graphic.geometry;
             return;
           }
         });
-        var wellExtent = selectedWell.geometry.getExtent();
-        map.setExtent(wellExtent);
-        selectionLayer.clear();
+        //var wellExtent = selectedWell.geometry.getExtent();
+        map.setExtent(newExtent);
+        //selectionLayer.clear();
        // var wellExtent = featureLayer[0].geometry.getExtent().expand(5.0);
         //map.setExtent(wellExtent);
-    }*/
-
+    }
+/*
     function zoomRow(id) {
         //console.log(id);
         var distance = 500;
@@ -341,7 +342,7 @@
           return true;
         }
       });
-    }
+    }*/
 
     /*function zoomExtent(){
         var initExtent = new esri.geometry.Extent(-118.644,30.872,-104.142,37.986,new esri.SpatialReference({"wkid":4326}));
