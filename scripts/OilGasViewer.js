@@ -228,6 +228,7 @@
 
 
     function updateGrid(featureSet){
+        console.log(map.spatialReference);
         var data=[];
         var grid = dijit.byId('grid');
         dojo.forEach(featureSet, function (entry) {
@@ -296,7 +297,8 @@
         var grid = dijit.byId('grid');
         var clickedWell = grid.getItem(id);
         var selectedWell = map.graphics;
-        var distance = 1000;
+        console.log(map.graphics.graphics);
+        var distance = 100;
         var newExtent = new esri.geometry.Extent({
             "xmin": selectedWell.x - distance,
             "ymin": selectedWell.y - distance,
@@ -305,20 +307,21 @@
             "spatialReference":{"wkid":102100}
         });
 
-        console.log(map.graphics.graphics);
         dojo.forEach(map.graphics.graphics,function(graphic){
             console.log(graphic);
           if((graphic.attributes) && graphic.attributes.FID === clickedWell.FID){
-            selectedWell = graphic.geometry;
+            selectedWell = graphic;
             return;
           }
         });
-        //var wellExtent = selectedWell.geometry.getExtent();
+
         map.setExtent(newExtent);
+        //var wellExtent = selectedWell.geometry.getExtent();
         //selectionLayer.clear();
        // var wellExtent = featureLayer[0].geometry.getExtent().expand(5.0);
         //map.setExtent(wellExtent);
     }
+
 /*
     function zoomRow(id) {
         //console.log(id);
