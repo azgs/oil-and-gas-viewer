@@ -1,29 +1,24 @@
-//dojo.require("esri.map");
 dojo.require("dojox.grid.DataGrid");
-//dojo.require("dojo.data.ItemFileReadStore");
-//dojo.require("esri.tasks.query");
-//dojo.require("esri.tasks.QueryTask");
-//dojo.require("dojo.dom");
-//dojo.require("dojo.on");
-//dojo.require("dojo.domReady");
+dojo.require("dojo.data.ItemFileReadStore");
+dojo.require("esri.tasks.query");
+dojo.require("esri.tasks.QueryTask");
+dojo.require("dojo.dom");
+dojo.require("dojo.on");
+dojo.require("dojo.domReady");
 
-var myQueryTask, myQuery;
-require(["dojox/grid/DataGrid","dojo/data/ItemFileReadStore",
-    "esri/tasks/query","esri/tasks/QueryTask",
-    "dojo/dom","dojo/on","dojo/domReady!"],
-function(on,Query,QueryTask,dom){
+var queryTask, query;
 
-    myQueryTask = new QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
+function int(){
 
-    myQuery = new Query();
-    myQuery.returnGeometry = false;
-    myQuery.outFeilds = ["*"]
-    on(dom.byId("execute"), "click", runQuery);
+    queryTask = new QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
 
+    query = new Query();
+    query.returnGeometry = false;
+    query.outFeilds = ["apino", "wellname", "drillertotaldepth", "county", "twp", "rge", "section_", "formationtd", "otherid","status","field"]
+}
 function runQuery(twp){
-    myQuery.text = dom.byId("twpid").value;
-
-    myQueryTask.execute(query,updateGrid);
+    query.where = "twp = '" + twp + "'";
+    queryTask.execute(query,updateGrid(featureSet));
 
 }
 
@@ -85,4 +80,3 @@ function updateGrid(featureSet){
         var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
         grid.setStore(store);
     }
-    });
