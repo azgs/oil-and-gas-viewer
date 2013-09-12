@@ -13,24 +13,19 @@
     <script src="Scripts/App2.js"></script>
 
 
-
-
+    <link rel="stylesheet" href="Styles/Base.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/Grid.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/tundraGrid.css">
-    <link rel="stylesheet" href="Styles/Base.css">
+    <!--<link rel="stylesheet" href="Styles/Base.css">-->
 
 
-    <style type="text/css">
-
-
-
-
+    <style>
     </style>
 
 </head>
 <body>
 
-<div id="tab_body">
+
 <div id="titleBar">
     <div id="titleText" class="mapMenus">
         <a href='http://azogcc.az.gov/'>ARIZONA OIL AND GAS <br>CONSERVATION COMMISSION</a>
@@ -48,14 +43,16 @@
     </ul>
 </div>
 <div id="image_box">
-    <image src="photos/Arizona_Meridians.jpg">
+    <image src="photos/Arizona_Meridians_Labled.jpg">
         <div id="img_info">
             <p>Map of Arizona State Meridians</p>
         </div>
+        </image>
 </div>
 
 
-<form method="post" action="">
+
+<form action="">
 <div id="search_body">
     <div id="search_info">
         <p>
@@ -192,10 +189,18 @@
         </tr>
         <tr>
             <td class="label">
+                <label for="depthid">Well Depth</label>
+            </td>
+            <td>
+               <input type="text" name="drillertotaldepth" id="depthid" size="10" maxlength="10"><br>
+            </td>
+        </tr>
+        <!--<tr>
+            <td class="label">
                 <label for="statusid">Well Status</label>
             </td>
             <td>
-                <!--<input type="text" name="status" size="20" maxlength="20"><br>-->
+                <!--<input type="text" name="status" size="20" maxlength="20"><br>
                 <select name="status" id="statusid">
                     <option value=""> </option>
                     <option value="Dry hole">D = Dry hole</option>
@@ -221,7 +226,7 @@
                     <option value="WW = Water well">WW = Water well</option>
                 </select>
             </td>
-        </tr>
+        </tr>-->
         <tr>
             <td class="label">
                 <label for="formationtdid">Formation at Total Depth</label>
@@ -232,7 +237,7 @@
         </tr>
         <tr>
             <td>
-                <input type="button" id="execute" onclick="execute" value="Submit Search"/>
+                <input type="button" id="executeButton" value="Submit Search"/>
             </td>
             <td>
                 <input type="reset" value="Reset Search"/>
@@ -240,9 +245,12 @@
         </tr>
     </table>
 </div>
-<div id="results">
+
+
+</form>
+<div id="outGrid">
     <!--data-dojo-type="dijit.layout.ContentPane"
-    data-dojo-props="region:'bottom'">-->
+    data-dojo-props="region:'bottom'"-->
     <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
     <table data-dojo-type="dojox.grid.DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%">
         <thead>
@@ -264,7 +272,6 @@
     </table>
 </div>
 
-</form>
-
+<div id="info" class="tundra" style="padding:5px; margin:5px "></div>
 </body>
 </html>

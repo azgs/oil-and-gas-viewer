@@ -1,36 +1,65 @@
 //dojo.require("esri.map");
-dojo.require("dojox.grid.DataGrid");
-//dojo.require("dojo.data.ItemFileReadStore");
+//dojo.require("dojox.grid.DataGrid");
+dojo.require("dojo.data.ItemFileReadStore");
 //dojo.require("esri.tasks.query");
 //dojo.require("esri.tasks.QueryTask");
 //dojo.require("dojo.dom");
 //dojo.require("dojo.on");
-//dojo.require("dojo.domReady");
+//dojo.require("dojo.domReady!");
 
-var myQueryTask, myQuery;
-require(["dojox/grid/DataGrid","dojo/data/ItemFileReadStore",
+
+require(["dojox/grid/DataGrid", "dojo/ready",//"dojo/data/ItemFileReadStore",
     "esri/tasks/query","esri/tasks/QueryTask",
     "dojo/dom","dojo/on","dojo/domReady!"],
-function(on,Query,QueryTask,dom){
-
+function(DataGrid,ready,Query,QueryTask,dom,on){
+    ready(function(){
+//function init(){
+    var myQueryTask, myQuery;
     myQueryTask = new QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
 
     myQuery = new Query();
     myQuery.returnGeometry = false;
     myQuery.outFeilds = ["*"]
-    on(dom.byId("execute"), "click", runQuery);
+//}
 
-function runQuery(twp){
-    myQuery.text = dom.byId("twpid").value;
 
-    myQueryTask.execute(query,updateGrid);
+
+function runQuery(){
+    //myQuery.text = dom.byId("twpid").value;
+    var apiNo = dom.byId('apinum').value;
+    var otherId = dom.byId('stateperm');
+    var wellName = dom.byId('wellnameid');
+    var county = dom.byId('countyid');
+    var twp = dom.byId('twpid');
+    var rge = dom.byId('rgeid');
+    var section = dom.byId('sectionid');
+    var drillerDepth = dom.byId('depthid');
+    var formation = dom.byId('formationtdid');
+    var field = dom.byId('fieldid');
+
+    myQuery.where ="apino like '%" + apiNo + "%'" + " OR " + "otherid like '%" + otherId + "%'";
+//console.log(myQuery);
+    //apino otherid wellname county twp rge section_ drillertotaldepth formationtd field
+    myQueryTask.execute(myQuery,updateGrid);
+
+}
+function showResults(myFeatures){
+    console.log(myFeatures);
+    var s = "";
+          for (var i=0, il=myFeatures.features.length; i < il; i++) {
+            var featureAttributes = myFeatures.features[i].attributes;
+            for (att in featureAttributes) {
+              s = s + "<strong>" + att + ": </strong>" + featureAttributes[att] + "<br />";
+            }
+          }
+          dojo.byId("info").innerHTML = s;
 
 }
 
 function updateGrid(featureSet){
-        console.log(map.spatialReference);
+        console.log(featureSet);
         var data=[];
-        var grid = dijit.byId('grid');
+        var grid = dom.byId('grid');
         dojo.forEach(featureSet, function (entry) {
             //if related geographic then related = entry.att.related
             // else api search related= entry.feature.att.related
@@ -85,4 +114,8 @@ function updateGrid(featureSet){
         var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
         grid.setStore(store);
     }
+    on(dom.byId("executeButton"), "click", runQuery);
     });
+});
+
+//dojo.ready(init);
