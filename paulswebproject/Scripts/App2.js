@@ -8,10 +8,10 @@ dojo.require("dojo.data.ItemFileReadStore");
 //dojo.require("dojo.domReady!");
 
 
-require(["dojox/grid/DataGrid", "dojo/ready",//"dojo/data/ItemFileReadStore",
+require(["dojo/store/Memory","dojox/grid/DataGrid", "dojo/ready",//"dojo/data/ItemFileReadStore",
     "esri/tasks/query","esri/tasks/QueryTask",
-    "dojo/dom","dojo/on","dojo/domReady!"],
-function(DataGrid,ready,Query,QueryTask,dom,on){
+    "dojo/dom","dojo/on","dojo/_base/array","dojo/domReady!"],
+function(Memory,DataGrid,ready,Query,QueryTask,dom,on,array){
     ready(function(){
 //function init(){
     var myQueryTask, myQuery;
@@ -19,7 +19,7 @@ function(DataGrid,ready,Query,QueryTask,dom,on){
 
     myQuery = new Query();
     myQuery.returnGeometry = false;
-    myQuery.outFeilds = ["*"]
+    myQuery.outFields = ["*"];
 //}
 
 
@@ -60,10 +60,10 @@ function updateGrid(featureSet){
         console.log(featureSet);
         var data=[];
         var grid = dom.byId('grid');
-        dojo.forEach(featureSet, function (entry) {
+        array.forEach(featureSet.features, function (entry) {
             //if related geographic then related = entry.att.related
             // else api search related= entry.feature.att.related
-           // console.log(entry);
+            // console.log(data);
             var logs = [],
                 las = [],
                 folders = [],
@@ -110,8 +110,8 @@ function updateGrid(featureSet){
         var dataForGrid= {
             items: data
             };
-
-        var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
+console.log(data);
+        var store = new Memory({data:dataForGrid});
         grid.setStore(store);
     }
     on(dom.byId("executeButton"), "click", runQuery);

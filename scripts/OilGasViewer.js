@@ -228,7 +228,7 @@
 
 
     function updateGrid(featureSet){
-        console.log(map.spatialReference);
+        console.log(featureSet);
         var data=[];
         var grid = dijit.byId('grid');
         dojo.forEach(featureSet, function (entry) {

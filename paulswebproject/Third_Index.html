@@ -2,28 +2,34 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible"
-          content="IE=7,IE=9">
-    <meta name="viewport" content="initial-scale=1,
-    maximum-scale=1, user-scalable=no">
+
 
     <title>Text Search</title>
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
+    <script>
+        var dojoConfig = {
+            parseOnLoad:true
+        };
+    </script>
+
     <script src="http://js.arcgis.com/3.6/"></script>
     <script src="Scripts/App2.js"></script>
+    <script>
+        dojo.require("dojox.grid.DataGrid");
+    </script>
 
 
-    <link rel="stylesheet" href="Styles/Base.css">
+
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/Grid.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/tundraGrid.css">
-    <!--<link rel="stylesheet" href="Styles/Base.css">-->
+    <link rel="stylesheet" href="Styles/Base.css">
 
 
     <style>
     </style>
 
 </head>
-<body>
+<body class="tundra">
 
 
 <div id="titleBar">
@@ -56,7 +62,7 @@
 <div id="search_body">
     <div id="search_info">
         <p>
-            <span id="TextSearch">Text Search:</span> Complete one or multiple fields and press the Submit Search button to search for wells based on their attributes. Selecting LAS data will open the LAS data in a text file. The selected LAS data can be saved and downloaded by using the save page as function.
+            <span id="TextSearch"><strong>Text Search:</strong></span> Complete one or multiple fields and press the Submit Search button to search for wells based on their attributes. Selecting LAS data will open the LAS data in a text file. The selected LAS data can be saved and downloaded by using the save page as function.
         </p>
     </div>
     <table>
@@ -248,9 +254,9 @@
 
 
 </form>
-<div id="outGrid">
-    <!--data-dojo-type="dijit.layout.ContentPane"
-    data-dojo-props="region:'bottom'"-->
+<div id="outGrid"
+    data-dojo-type="dijit.layout.ContentPane"
+    data-dojo-props="region:'bottom'">
     <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
     <table data-dojo-type="dojox.grid.DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%">
         <thead>
