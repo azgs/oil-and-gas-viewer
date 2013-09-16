@@ -8,10 +8,27 @@ dojo.require("dojo.data.ItemFileReadStore");
 //dojo.require("dojo.domReady!");
 
 
-require(["dojo/store/Memory","dojox/grid/DataGrid", "dojo/ready",//"dojo/data/ItemFileReadStore",
-    "esri/tasks/query","esri/tasks/QueryTask",
-    "dojo/dom","dojo/on","dojo/_base/array","dojo/domReady!"],
-function(Memory,DataGrid,ready,Query,QueryTask,dom,on,array){
+require(["dojo/data/ObjectStore",
+    "dijit/registry",
+    "dojo/store/Memory",
+    "dgrid/OnDemandGrid",
+    "dojo/ready",
+    "esri/tasks/query",
+    "esri/tasks/QueryTask",
+    "dojo/dom",
+    "dojo/on",
+    "dojo/_base/array",
+    "dojo/domReady!"],
+function(ObjectStore,
+         registry,
+         Memory,
+         Grid,
+         ready,
+         Query,
+         QueryTask,
+         dom,
+         on,
+         array){
     ready(function(){
 //function init(){
     var myQueryTask, myQuery;
@@ -19,7 +36,7 @@ function(Memory,DataGrid,ready,Query,QueryTask,dom,on,array){
 
     myQuery = new Query();
     myQuery.returnGeometry = false;
-    myQuery.outFields = ["*"];
+    myQuery.outFields = ["apino","otherid","wellname","county","twp","rge","section_","drillertotaldepth","formationtd","field","relatedresource","welltype"];
 //}
 
 
@@ -27,7 +44,7 @@ function(Memory,DataGrid,ready,Query,QueryTask,dom,on,array){
 function runQuery(){
     //myQuery.text = dom.byId("twpid").value;
     var apiNo = dom.byId('apinum').value;
-    var otherId = dom.byId('stateperm');
+    var otherId = dom.byId('stateperm').value;
     var wellName = dom.byId('wellnameid');
     var county = dom.byId('countyid');
     var twp = dom.byId('twpid');
@@ -38,11 +55,70 @@ function runQuery(){
     var field = dom.byId('fieldid');
 
     myQuery.where ="apino like '%" + apiNo + "%'" + " OR " + "otherid like '%" + otherId + "%'";
+    //myQuery.where ="apino like '%" + 02- + "%'" + " AND " + "otherid like '%" + otherId + "%'";  definintion query?
 //console.log(myQuery);
     //apino otherid wellname county twp rge section_ drillertotaldepth formationtd field
     myQueryTask.execute(myQuery,updateGrid);
 
 }
+
+        function apiQuery(){
+            var apiNo = dom.byId('apinum').value;
+            myQuery.where ="apino like '%" + apiNo + "%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function stPerQuery(){
+            var otherId = dom.byId('stateperm').value;
+            myQuery.where ="otherid like '%" + otherId + "%'" + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function countQuery(){
+            var county = dom.byId('countyid').value;
+            myQuery.where ="county like '%" + county+ "%'" + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function fieldQuery(){
+            var field = dom.byId('fieldid').value;
+            myQuery.where ="field like '%" + field + "%'" + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function twnQuery(){
+            var twp = dom.byId('twpid').value;
+            myQuery.where ="twp like '%" + twp + "%'" + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function rgeQuery(){
+            var rge = dom.byId('rgeid').value;
+            myQuery.where ="rge like '%" + rge + "%'" + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function sectQuery(){
+            var section = dom.byId('sectionid').value;
+            myQuery.where ="section_ like '%" + section + "%'" + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function operQuery(){
+            var operator = dom.byId('operatorid').value;
+            myQuery.where ="operator like '%" + operator + "%'" + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function wellNaQuery(){
+            var wellName = dom.byId('wellnameid').value;
+            myQuery.where ="wellname like '%" + wellName + "%'" + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function depthQuery(){
+            var drillerDepth = dom.byId('depthid').value;
+            myQuery.where ="drillertotaldepth >=" + drillerDepth + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+        function formQuery(){
+            var formation = dom.byId('formationtdid').value;
+            myQuery.where ="formationtd like '%" + formation + "%'" + " AND " +"apino like '02-%'";
+            myQueryTask.execute(myQuery,updateGrid);
+        }
+
+
 function showResults(myFeatures){
     console.log(myFeatures);
     var s = "";
@@ -59,7 +135,7 @@ function showResults(myFeatures){
 function updateGrid(featureSet){
         console.log(featureSet);
         var data=[];
-        var grid = dom.byId('grid');
+        var grid = registry.byId('grid');
         array.forEach(featureSet.features, function (entry) {
             //if related geographic then related = entry.att.related
             // else api search related= entry.feature.att.related
@@ -111,10 +187,21 @@ function updateGrid(featureSet){
             items: data
             };
 console.log(data);
-        var store = new Memory({data:dataForGrid});
+        var store = new ObjectStore({objectStore: new Memory({data:dataForGrid}) });
         grid.setStore(store);
     }
-    on(dom.byId("executeButton"), "click", runQuery);
+    on(dom.byId("executeApi"), "click", apiQuery);
+    on(dom.byId("executeSP"), "click", stPerQuery);
+    on(dom.byId("executeCount"), "click", countQuery);
+    on(dom.byId("executeField"), "click", fieldQuery);
+    on(dom.byId("executeTwn"), "click", twnQuery);
+    on(dom.byId("executeRge"), "click", rgeQuery);
+    on(dom.byId("executeSect"), "click", sectQuery);
+    on(dom.byId("executeOper"), "click", operQuery);
+    on(dom.byId("executeWellN"), "click", wellNaQuery);
+    on(dom.byId("executeDepth"), "click", depthQuery);
+    on(dom.byId("executeForm"), "click", formQuery);
+
     });
 });
 
