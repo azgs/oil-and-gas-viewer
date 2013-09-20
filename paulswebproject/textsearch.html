@@ -49,7 +49,7 @@
     </ul>
 </div>
 <div id="image_box">
-    <image src="photos/Arizona_Meridians_Labled.jpg">
+    <image src="photos/Arizona_Meridians_Labled.jpg" height="385" width="350">
         <div id="img_info">
             <p>Map of Arizona State Meridians</p>
         </div>
@@ -72,16 +72,14 @@
                 <label for="apinum">API Number</label>
             </td>
             <td>
-                <input type="text" name="apino" id="apinum" size="14" maxlength="14"><br>
+                <input type="text" name="apino" id="apinum" size="14" maxlength="14" placeholder="02-005-00000"><br>
             </td>
         </tr>
 		<tr>
             <td>
                 <input type="button" id="executeApi" value="Search by API"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
 		</table>
 		</form>
@@ -93,16 +91,14 @@
                 <label for="stateperm"> State Permit</label>
             </td>
             <td>
-                <input type="text" name="otherid" id="stateperm" size="4" maxlength="4"><br>
+                <input type="text" name="otherid" id="stateperm" size="4" maxlength="4" placeholder="0000"><br>
             </td>
         </tr>
 		<tr>
             <td>
                 <input type="button" id="executeSP" value="Search by State Permit"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
 		</table>
 		</form>
@@ -138,9 +134,7 @@
             <td>
                 <input type="button" id="executeCount" value="Search by County"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
 		</table>
 		</form>
@@ -152,16 +146,66 @@
                 <label for="fieldid">Field Name</label>
             </td>
             <td>
-                <input type="text" name="field" id="fieldid" size="30" maxlength="30"><br>
+                <select name="field" id="fieldid">
+                    <option value=" "> </option>
+                    <option value="Adamana">Adamana</option>
+                    <option value="Alpine">Alpine</option>
+                    <option value="Antelope Springs">Antelope Springs</option>
+                    <option value="Apache Junction">Apache Junction</option>
+                    <option value="BR">BR</option>
+                    <option value="Bita Peak">Bita Peak</option>
+                    <option value="Black Rock">Black Rock</option>
+                    <option value="Bonanza Claim">Bonanza Claim</option>
+                    <option value="Casa Grande">Casa Grande</option>
+                    <option value="Chino Valley">Chino Valley</option>
+                    <option value="Clifton">Clifton</option>
+                    <option value="Cow Springs">Cow Springs</option>
+                    <option value="DBK">DBK</option>
+                    <option value="DM">DM</option>
+                    <option value="Dineh">Dineh Bi Keyah</option>
+                    <option value="Dry Mesa">Dry Mesa</option>
+                    <option value="East Boundary Butte">East Boundary Butte</option>
+                    <option value="East Navajo Springs">East Navajo Springs</option>
+                    <option value="Florence">Florence</option>
+                    <option value="Fredonia">Fredonia</option>
+                    <option value="HLB">HLB</option>
+                    <option value="Holbrook">Holbrook</option>
+                    <option value="Liberty">Liberty</option>
+                    <option value="Litchfield Park">Litchfield Park</option>
+                    <option value="Luke">Luke</option>
+                    <option value="NS">NS</option>
+                    <option value="Navajo South">Navajo South</option>
+                    <option value="Navajo Springs">Navajo Springs</option>
+                    <option value="North TOH-ATIN">North Toh-Atin</option>
+                    <option value="PD">PD</option>
+                    <option value="POTASH">Potash</option>
+                    <option value="Phoenix">Phoenix</option>
+                    <option value="Picacho">Picacho</option>
+                    <option value="Pinta Dome">Pinta Dome</option>
+                    <option value="Red Lake">Red Lake</option>
+                    <option value="STJOHX">St Johx</option>
+                    <option value="St John">St John</option>
+                    <option value="Sedona">Sedona</option>
+                    <option value="Sonoita">Sonoita</option>
+                    <option value="South Andio Creek">South Andio Creek</option>
+                    <option value="South Anida Creek">South Anida Creek</option>
+                    <option value="Superior East">Superior East</option>
+                    <option value="Teec Nos Pos">Teec Nos Pos</option>
+                    <option value="Tucson Basin">Tucson Basin</option>
+                    <option value="Walker Creek">Walker Creek</option>
+                    <option value="White State Prospect">White State Prospect</option>
+                    <option value="Wildcat">Wildcat</option>
+                    <option value="Willcox">Willcox</option>
+                    <option value="Yuma">Yuma</option>
+                </select>
+                <!--<input type="text" name="field" id="fieldid" size="30" maxlength="30"><br>-->
             </td>
         </tr>
 		<tr>
             <td>
                 <input type="button" id="executeField" value="Search by Field"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
 		</table>
 		</form>
@@ -173,42 +217,36 @@
                 <label for="twpid">Township</label>
             </td>
             <td>
-                <input type="text" name="twp" id="twpid" size="4" maxlength="4"><br>
+                <input type="text" name="twp" id="twpid" size="4" maxlength="4" placeholder="00N"><br>
             </td>
         </tr>
-		<tr>
-            <td>
-                <input type="button" id="executeTwn" value="Search by Township"/>
-            </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
-        </tr>
-		</table>
-		</form>
-		
-		<form action="">
-    <table>
-        <tr>
+                <tr>
             <td class="label">
                 <label for="rgeid">Range</label>
             </td>
             <td>
-                <input type="text" name="rge" id="rgeid" size="4" maxlength="4"><br>
+                <input type="text" name="rge" id="rgeid" size="4" maxlength="4" placeholder="00E"><br>
+            </td>
+        </tr>
+         <tr>
+            <td class="label">
+                <label for="sectionid">Section</label>
+            </td>
+            <td>
+                <input type="text" name="section_" id="sectionid" size="4" maxlength="4" placeholder="00"><br>
             </td>
         </tr>
 		<tr>
             <td>
-                <input type="button" id="executeRge" value="Search by Range"/>
+                <input type="button" id="executePLSS" value="Search by PLSS"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
 		</table>
 		</form>
+
 		
-		<form action="">
+		<!--<form action="">
     <table>
         <tr>
             <td class="label">
@@ -260,12 +298,10 @@
             <td>
                 <input type="button" id="executeSect" value="Search by Section"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
 		</table>
-		</form>
+		</form>-->
 		
 		<form action="">
     <table>
@@ -281,9 +317,7 @@
             <td>
                 <input type="button" id="executeOper" value="Search by Operator"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
 		</table>
 		</form>
@@ -302,9 +336,7 @@
             <td>
                 <input type="button" id="executeWellN" value="Search by Well Name"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
 		</table>
 		</form>
@@ -313,19 +345,17 @@
     <table>
         <tr>
             <td class="label">
-                <label for="depthid">Well Depth</label>
+                <label for="depthid">Well Minimum Depth(ft)</label>
             </td>
             <td>
-               <input type="text" name="drillertotaldepth" id="depthid" size="10" maxlength="10"><br>
+               <input type="text" name="drillertotaldepth" id="depthid" size="8" maxlength="10" placeholder="500"><br>
             </td>
         </tr>
 		<tr>
             <td>
                 <input type="button" id="executeDepth" value="Search by Depth"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
 		</table>
 		</form>
@@ -377,9 +407,7 @@
             <td>
                 <input type="button" id="executeForm" value="Search by Formation"/>
             </td>
-            <td>
-                <input type="reset" value="Reset Search"/>
-            </td>
+
         </tr>
     </table>
             </form>
