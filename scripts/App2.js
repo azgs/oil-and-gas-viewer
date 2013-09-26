@@ -1,17 +1,9 @@
-//dojo.require("esri.map");
-//dojo.require("dojox.grid.DataGrid");
-dojo.require("dojo.data.ItemFileReadStore");
-//dojo.require("esri.tasks.query");
-//dojo.require("esri.tasks.QueryTask");
-//dojo.require("dojo.dom");
-//dojo.require("dojo.on");
-//dojo.require("dojo.domReady!");
 
 
 require(["dojo/data/ObjectStore",
     "dijit/registry",
     "dojo/store/Memory",
-    "dgrid/OnDemandGrid",
+    "dojox/grid/DataGrid",
 
     "dojo/ready",
     "esri/tasks/query",
@@ -28,7 +20,7 @@ require(["dojo/data/ObjectStore",
 function(ObjectStore,
          registry,
          Memory,
-         Grid,
+         DataGrid,
          ready,
          Query,
          QueryTask,
@@ -36,19 +28,15 @@ function(ObjectStore,
          on,
          array){
     ready(function(){
-//function init(){
 
     var myQueryTask, myQuery;
     myQueryTask = new QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
-
     myQuery = new Query();
     myQuery.returnGeometry = false;
     myQuery.outFields = ["apino","otherid","wellname","county","twp","rge","section_","drillertotaldepth","formationtd","field","relatedresource","welltype"];
-//}
 
 
-
-function runQuery(){
+/*function runQuery(){
     //myQuery.text = dom.byId("twpid").value;
     var apiNo = dom.byId('apinum').value;
     var otherId = dom.byId('stateperm').value;
@@ -67,7 +55,7 @@ function runQuery(){
     //apino otherid wellname county twp rge section_ drillertotaldepth formationtd field
     myQueryTask.execute(myQuery,updateGrid);
 
-}
+}*/
 
         function apiQuery(){
             var apiNo = dom.byId('apinum').value;
@@ -140,13 +128,11 @@ function showResults(myFeatures){
 }
 
 function updateGrid(featureSet){
-        console.log(featureSet);
+        console.log("1");
         var data=[];
         var grid = registry.byId('grid');
         array.forEach(featureSet.features, function (entry) {
-            //if related geographic then related = entry.att.related
-            // else api search related= entry.feature.att.related
-            // console.log(data);
+
             var logs = [],
                 las = [],
                 folders = [],
@@ -209,5 +195,3 @@ console.log(data);
 
     });
 });
-
-//dojo.ready(init);
