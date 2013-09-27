@@ -7,22 +7,17 @@
 
     <title>Text Search</title>
 
-    <script src="http://js.arcgis.com/3.6/"></script>
-    <script src="scripts/App2.js"></script>
-
-    <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dijit/themes/tundra/tundra.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/Grid.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/tundraGrid.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
     <link rel="stylesheet" href="styles/Base.css">
 
-
-    <style>
-    </style>
+    <script src="http://js.arcgis.com/3.6/"></script>
+    <script src="scripts/App2.js"></script>
 
 </head>
 <body class="tundra">
-
 
 <div id="titleBar">
 <div id="titleText" class="mapMenus">
@@ -42,10 +37,6 @@
     </div>
 </div>
 
-
-
-
-
 <div id="search_body"
      data-dojo-type="dijit/layout/BorderContainer"
      data-dojo-props="design:'headline', gutters:true"
@@ -54,9 +45,11 @@
 <div id="search_info"
         data-dojo-type="dijit/layout/ContentPane"
 	   data-dojo-props="region:'top'">
-        <p>
-            <span id="TextSearch"><strong>Text Search:</strong></span> Complete one or multiple fields and press the Submit Search button to search for wells based on their attributes. Selecting LAS data will open the LAS data in a text file. The selected LAS data can be saved and downloaded by using the save page as function.
-        </p>
+    <div id="info">
+    <p>
+        <strong> Text Search:</strong> Complete one or multiple fields and press the Submit Search button to search for wells based on their attributes. Selecting LAS data will open the LAS data in a text file. The selected LAS data can be saved and downloaded by using the save page as function.
+    </p>
+        </div>
     </div>
 
 <div id="image_box"
@@ -68,7 +61,6 @@
         </div>
 
 </div>
-
 
 <div id="forum"
      data-dojo-type="dijit/layout/ContentPane"
@@ -246,7 +238,6 @@
 		</table>
 		</form>
 
-		
 		<form action="">
     <table>
         <tr>
@@ -314,8 +305,7 @@
                 <input type="text" name="formationtd" id="formationtdid" size="30" maxlength="30" placeholder="Permian Coconino"><br>
             </td>
         </tr>
-		
-		
+
         <tr>
             <td>
                 <input type="button" id="executeForm" value="Search by Formation"/>
@@ -327,13 +317,11 @@
 
     </div>
 
-
-
 <div id="outGrid"
     data-dojo-type="dijit/layout/ContentPane"
-    data-dojo-props="region: 'bottom'">
+    data-dojo-props="region: 'bottom'" style="height: 100%;">
     <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
-    <table data-dojo-type="dojox/grid/DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%">
+    <table data-dojo-type="dojox/grid/DataGrid" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%">
         <thead>
         <tr>
             <th field="apino" width="auto">API No</th>

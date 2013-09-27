@@ -1,5 +1,5 @@
 head{
-     height: 100%;
+    height: 100%;
     width: 100%;
 }
 body {
@@ -95,7 +95,7 @@ body {
 }
 #img_info {
     border-top:1px solid gray;
-    padding-bottom:-10px;
+    padding-bottom:10px;
     padding-left:10px;
     padding-right:10px;
     margin-left:-10px;
