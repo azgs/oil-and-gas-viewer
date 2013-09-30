@@ -12,12 +12,18 @@ require(["dojo/data/ObjectStore",
     "dijit/registry",
     "dojo/store/Memory",
     "dgrid/OnDemandGrid",
+
     "dojo/ready",
     "esri/tasks/query",
     "esri/tasks/QueryTask",
+
     "dojo/dom",
     "dojo/on",
     "dojo/_base/array",
+
+    "dijit/layout/BorderContainer",
+    "dijit/layout/ContentPane",
+
     "dojo/domReady!"],
 function(ObjectStore,
          registry,
@@ -31,6 +37,7 @@ function(ObjectStore,
          array){
     ready(function(){
 //function init(){
+
     var myQueryTask, myQuery;
     myQueryTask = new QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
 

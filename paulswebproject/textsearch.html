@@ -6,23 +6,17 @@
 
     <title>Text Search</title>
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
-    <script>
-        var dojoConfig = {
-            parseOnLoad:true
-        };
-    </script>
+    <!--<script>
+        var dojoConfig = { parseOnLoad:true };
+
+    </script>-->
 
     <script src="http://js.arcgis.com/3.6/"></script>
-    <script src="Scripts/App2.js"></script>
-    <script>
-        dojo.require("dojox.grid.DataGrid");
-    </script>
-
-
+    <script src="scripts/App2.js"></script>
 
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/Grid.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/tundraGrid.css">
-    <link rel="stylesheet" href="Styles/Base.css">
+    <link rel="stylesheet" href="styles/Base.css">
 
 
     <style>
@@ -33,38 +27,50 @@
 
 
 <div id="titleBar">
-    <div id="titleText" class="mapMenus">
-        <a href='http://azogcc.az.gov/'>ARIZONA OIL AND GAS <br>CONSERVATION COMMISSION</a>
-    </div>
-    <div id="titleImg" class="mapMenus">
-        <a href='http://azgs.az.gov/'><img src="photos/AZ_state_seal2.png" height="49" width="49"></a>
-    </div>
+<div id="titleText" class="mapMenus">
+    <a href='http://azogcc.az.gov/'>ARIZONA OIL AND GAS <br>CONSERVATION COMMISSION</a>
 </div>
+
 <div id="navigationMenu" class="mapMenus">
     <ul>
         <li><a href='http://azogcc.az.gov/'>Home</a></li>
         <li><a href='http://azgs.az.gov/'>AZGS</a></li>
-        <li><a href='http://welldata.azogcc.az.gov/OilGasViewer.html'>Map Search</a></li>
-        <li><a href='http://welldata.azogcc.az.gov/PyCh_index.html'>Text Search</a></li>
+        <li><a href='http://welldata.azogcc.az.gov/index.html'>Map Search</a></li>
+        <li><a href='http://welldata.azogcc.az.gov/textsearch.html'>Text Search</a></li>
     </ul>
 </div>
-<div id="image_box">
-    <image src="photos/Arizona_Meridians_Labled.jpg" height="385" width="350">
-        <div id="img_info">
-            <p>Map of Arizona State Meridians</p>
-        </div>
-        </image>
+    <div id="titleImg" class="mapMenus">
+        <a href='http://azgs.az.gov/'><img src="photos/AZ_state_seal2.png" height="49" width="49"></a>
+    </div>
 </div>
 
-
-
-
-<div id="search_body">
-    <div id="search_info">
+<div id="search_info">
         <p>
             <span id="TextSearch"><strong>Text Search:</strong></span> Complete one or multiple fields and press the Submit Search button to search for wells based on their attributes. Selecting LAS data will open the LAS data in a text file. The selected LAS data can be saved and downloaded by using the save page as function.
         </p>
     </div>
+
+
+
+<div id="search_body"
+        data-dojo-type="dijit/layout/BorderContainer"
+     data-dojo-props="design:'headline', gutters:false">
+     <!--style="width: 100%; height: 100%; margin: 0;"-->
+
+<div id="image_box"
+        data-dojo-type="dijit/layout/ContentPane"
+	   data-dojo-props="region:'right'">
+    <img src="photos/Arizona_Meridians_Labled.jpg" height="385" width="350">
+        <div id="img_info">
+            <p>Map of Arizona State Meridians</p>
+        </div>
+
+</div>
+
+
+<div id="forum"
+     data-dojo-type="dijit/layout/ContentPane"
+     data-dojo-props="region:'left'">
 	<form action="">
     <table>
         <tr>
@@ -152,7 +158,6 @@
                     <option value="Alpine">Alpine</option>
                     <option value="Antelope Springs">Antelope Springs</option>
                     <option value="Apache Junction">Apache Junction</option>
-                    <option value="BR">BR</option>
                     <option value="Bita Peak">Bita Peak</option>
                     <option value="Black Rock">Black Rock</option>
                     <option value="Bonanza Claim">Bonanza Claim</option>
@@ -160,30 +165,24 @@
                     <option value="Chino Valley">Chino Valley</option>
                     <option value="Clifton">Clifton</option>
                     <option value="Cow Springs">Cow Springs</option>
-                    <option value="DBK">DBK</option>
-                    <option value="DM">DM</option>
                     <option value="Dineh">Dineh Bi Keyah</option>
                     <option value="Dry Mesa">Dry Mesa</option>
                     <option value="East Boundary Butte">East Boundary Butte</option>
                     <option value="East Navajo Springs">East Navajo Springs</option>
                     <option value="Florence">Florence</option>
                     <option value="Fredonia">Fredonia</option>
-                    <option value="HLB">HLB</option>
                     <option value="Holbrook">Holbrook</option>
                     <option value="Liberty">Liberty</option>
                     <option value="Litchfield Park">Litchfield Park</option>
                     <option value="Luke">Luke</option>
-                    <option value="NS">NS</option>
                     <option value="Navajo South">Navajo South</option>
                     <option value="Navajo Springs">Navajo Springs</option>
                     <option value="North TOH-ATIN">North Toh-Atin</option>
-                    <option value="PD">PD</option>
                     <option value="POTASH">Potash</option>
                     <option value="Phoenix">Phoenix</option>
                     <option value="Picacho">Picacho</option>
                     <option value="Pinta Dome">Pinta Dome</option>
                     <option value="Red Lake">Red Lake</option>
-                    <option value="STJOHX">St Johx</option>
                     <option value="St John">St John</option>
                     <option value="Sedona">Sedona</option>
                     <option value="Sonoita">Sonoita</option>
@@ -246,63 +245,6 @@
 		</form>
 
 		
-		<!--<form action="">
-    <table>
-        <tr>
-            <td class="label">
-                <label for="sectionid">Section</label>
-            </td>
-            <td>
-                <select name="section_" id="sectionid">
-                    <option value=""> </option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                    <option value="24">24</option>
-                    <option value="25">25</option>
-                    <option value="26">26</option>
-                    <option value="27">27</option>
-                    <option value="28">28</option>
-                    <option value="29">29</option>
-                    <option value="30">30</option>
-                    <option value="31">31</option>
-                    <option value="32">32</option>
-                    <option value="33">33</option>
-                    <option value="34">34</option>
-                    <option value="35">35</option>
-                    <option value="36">36</option>
-                </select>
-            </td>
-        </tr>
-		<tr>
-            <td>
-                <input type="button" id="executeSect" value="Search by Section"/>
-            </td>
-
-        </tr>
-		</table>
-		</form>-->
-		
 		<form action="">
     <table>
         <tr>
@@ -310,7 +252,7 @@
                 <label for="operatorid">Operator</label>
             </td>
             <td>
-                <input type="text" name="operator" id="operatorid" size="30" maxlength="30"><br>
+                <input type="text" name="operator" id="operatorid" size="30" maxlength="30" placeholder="Arizona Bureau of Mines"><br>
             </td>
         </tr>
 		<tr>
@@ -329,7 +271,7 @@
                 <label for="wellnameid">Well Name</label>
             </td>
             <td>
-                <input type="text" name="wellname" id="wellnameid" size="30" maxlength="30"><br>
+                <input type="text" name="wellname" id="wellnameid" size="30" maxlength="30" placeholder="Dry Mesa 1"><br>
             </td>
         </tr>
 		<tr>
@@ -359,38 +301,7 @@
         </tr>
 		</table>
 		</form>
-        <!--<tr>
-            <td class="label">
-                <label for="statusid">Well Status</label>
-            </td>
-            <td>
-                <!--<input type="text" name="status" size="20" maxlength="20"><br>
-                <select name="status" id="statusid">
-                    <option value=""> </option>
-                    <option value="Dry hole">D = Dry hole</option>
-                    <option value="G = Gas well, producing">G = Gas well, producing</option>
-                    <option value="GP = Gas well, plugged and abandoned">GP = Gas well, plugged and abandoned</option>
-                    <option value="GS = Gas well, shut in">GS = Gas well, shut in</option>
-                    <option value="Helium well, completed, plugged and abandoned, no production record">HN = Helium well, completed, plugged and abandoned, no production record</option>
-                    <option value="HP = Helium well, completed, plugged and abandoned, production record">HP = Helium well, completed, plugged and abandoned, production record</option>
-                    <option value="HS = Helium well, completed, shut in">HS = Helium well, completed, shut in</option>
-                    <option value="JA = Test hole, junked and abandoned">JA = Test hole, junked and abandoned</option>
-                    <option value="O = Oil well, producing">O = Oil well, producing</option>
-                    <option value="OP = Oil well, plugged and abandoned">OP = Oil well, plugged and abandoned</option>
-                    <option value="OS = Oil well, shut in">OS = Oil well, shut in</option>
-                    <option value="OW = Oil well, converted to salt-water disposal">OW = Oil well, converted to salt-water disposal</option>
-                    <option value="PW = Salt-water disposal well, plugged and abandoned">PW = Salt-water disposal well, plugged and abandoned</option>
-                    <option value="S = Stratigraphic test"> S = Stratigraphic test</option>
-                    <option value="SA = Salt-mining well, plugged and abandoned"> SA = Salt-mining well, plugged and abandoned</option>
-                    <option value="SL = Storage well, liquefied petroleum gas">SL = Storage well, liquefied petroleum gas</option>
-                    <option value="SP = Storage well, liquefied petroleum gas, plugged and abandoned">SP = Storage well, liquefied petroleum gas, plugged and abandoned</option>
-                    <option value="TA = Test well, temporarily abandoned">TA = Test well, temporarily abandoned</option>
-                    <option value="TD = Geothermal well, dry, plugged and abandoned">TD = Geothermal well, dry, plugged and abandoned</option>
-                    <option value="TP = Geothermal; gradient well, plugged and abandoned">TP = Geothermal; gradient well, plugged and abandoned</option>
-                    <option value="WW = Water well">WW = Water well</option>
-                </select>
-            </td>
-        </tr>-->
+
         <form action="">
     <table>
 		<tr>
@@ -398,7 +309,7 @@
                 <label for="formationtdid">Formation at Total Depth</label>
             </td>
             <td>
-                <input type="text" name="formationtd" id="formationtdid" size="30" maxlength="30"><br>
+                <input type="text" name="formationtd" id="formationtdid" size="30" maxlength="30" placeholder="Permian Coconino"><br>
             </td>
         </tr>
 		
@@ -411,12 +322,14 @@
         </tr>
     </table>
             </form>
-</div>
+
+    </div>
+
 
 
 <div id="outGrid"
-    data-dojo-type="dijit.layout.ContentPane"
-    data-dojo-props="region:'bottom'">
+    data-dojo-type="dijit/layout/ContentPane"
+    data-dojo-props="region: bottom">
     <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
     <table data-dojo-type="dojox.grid.DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="height:100%; width:100%">
         <thead>
@@ -437,7 +350,7 @@
         </thead>
     </table>
 </div>
+</div>
 
-<div id="info" class="tundra" style="padding:5px; margin:5px "></div>
 </body>
 </html>

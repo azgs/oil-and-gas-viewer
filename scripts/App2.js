@@ -1,4 +1,6 @@
 
+dojo.require("dojox.grid.DataGrid");
+
 
 require(["dojo/data/ObjectStore",
     "dijit/registry",

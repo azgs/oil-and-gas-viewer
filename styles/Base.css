@@ -1,4 +1,4 @@
-head{
+html{
     height: 100%;
     width: 100%;
 }
@@ -8,7 +8,7 @@ body {
     background: -o-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
     background: -moz-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
     background: -ms-linear-gradient(bottom, #FAF4E8 46%, #F4E3CF 67%, #E9CAA1 87%);
-    height: 100%;
+    height: 95%;
     width: 100%;
     margin: 0;
 }
@@ -69,6 +69,9 @@ body {
     color: #feffff;
     text-decoration: none;
 }
+#search_body{
+    border:1px;
+}
 #search_info {
     border-left:1px solid gray;
     border-right:1px solid gray;
@@ -80,18 +83,17 @@ body {
     margin-right: 2px;
     /*width:586px;*/
 }
-#search_body{
-    height: 100%;
-}
 #image_box {
+    width: 23%;
     border:1px solid gray;
-    float:right;
+    /*float:right;*/
     padding-right:10px;
     padding-top:10px;
     padding-left:10px;
     padding-bottom:10px;
     margin-top:2px;
     margin-right:2px;
+    height: 40%;
 }
 #img_info {
     border-top:1px solid gray;
@@ -101,22 +103,29 @@ body {
     margin-left:-10px;
     margin-right:-10px;
 }
-
+#forum{
+    width: 60%;
+}
+#forum li {
+    display:inline;
+    padding: 25px;
+}
+#left{
+    float: left;
+    width: 50%;
+}
+#right{
+    float: right;
+    width: 50%;
+}
 form table {
 
     border:1px solid gray;
     width: 382px;
     margin-top:2px;
     margin-left:2px;
-
 }
-
-/*
-#search_body {
-border:2px solid gray;
-}
-*/
 #outGrid{
-    height: 22%;
+    height: 40%;
     font-size: 75%;
 }
