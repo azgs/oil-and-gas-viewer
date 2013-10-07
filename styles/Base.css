@@ -105,6 +105,7 @@ body {
 }
 #forum{
     width: 60%;
+	overflow: auto;
 }
 #forum li {
     display:inline;
@@ -113,15 +114,17 @@ body {
 #left{
     float: left;
     width: 50%;
+	overflow: auto;
 }
 #right{
     float: right;
     width: 50%;
+	overflow: auto;
 }
 form table {
 
     border:1px solid gray;
-    width: 382px;
+    width: 98%;
     margin-top:2px;
     margin-left:2px;
 }
