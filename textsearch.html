@@ -57,10 +57,11 @@
 <div id="image_box"
         data-dojo-type="dijit/layout/ContentPane"
 	   data-dojo-props="region:'right'">
+     <p>Map of Arizona State Meridians</p>
     <img src="photos/Arizona_Meridians_Labled.jpg" height="385" width="350">
-        <div id="img_info">
+        <!--<div id="img_info">
             <p>Map of Arizona State Meridians</p>
-        </div>
+        </div>-->
 
 </div>
 
@@ -331,7 +332,7 @@
     data-dojo-type="dijit/layout/ContentPane"
     data-dojo-props="region: 'bottom'">
     <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
-    <table data-dojo-type="dojox/grid/DataGrid" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="width:100%">
+    <table data-dojo-type="dojox/grid/DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="width:100%">
         <thead>
         <tr>
             <th field="apino" width="auto">API No</th>

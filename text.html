@@ -1,0 +1,148 @@
+<title>
+    Text Search
+</title>
+<script src="http://js.arcgis.com/3.6/">
+</script>
+<link rel="stylesheet" href="http://js.arcgis.com/3.6/js/esri/css/esri.css">
+<link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/Grid.css">
+<link rel="stylesheet" href="http://js.arcgis.com/3.6/js/dojo/dojox/grid/resources/tundraGrid.css">
+<style>
+html, body, #grid {
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+	width:100%
+}
+
+</style>
+<script>
+    require([
+		"dojo/_base/declare", 
+		"dojo/store/Memory",
+		"dgrid/OnDemandGrid", 
+		"dojo/parser",
+
+		"dojo/ready", 
+		"esri/tasks/query", 
+		"esri/tasks/QueryTask",
+
+		"dojo/dom", 
+		"dojo/on", 
+		"dojo/_base/array"
+	], function(declare, Memory, OnDemandGrid, parser, ready, Query, QueryTask, dom, on, array) {
+	
+	
+		var myQuery, myQueryTask;
+		
+		var StandardGrid = declare([OnDemandGrid]);
+		var grid = new StandardGrid({
+			bufferRows: 50,
+			columns: {
+				apino: "API No",
+				otherid: "State Permit No",
+				wellname: "Operator",
+				county: "County",
+				twp: "Township",
+				rge: "Range",
+				section_: "Section",
+				drillertotaldepth: "Depth (ft)",
+				formationtd: "Formation at Depth",
+				folderField: "Well Folder",
+				logField: "Scanned Well Log",
+				lasField: "LAS Data"
+			}
+		}, "grid");
+			
+        ready(function() {
+			// Make sure all elements are loaded and accessible
+			parser.parse();
+
+			// Run the Query 
+			runQuery();
+
+            function runQuery() {
+				myQuery = new Query();
+				myQueryTask = new QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
+				myQuery.returnGeometry = false;
+				myQuery.outFields = ["apino", "otherid", "wellname", "county", "twp", "rge", "section_", "drillertotaldepth", "formationtd", "field", "relatedresource", "welltype"];
+                myQuery.where = "apino like '%%'" + " OR " + "otherid like '%%'";
+                myQueryTask.execute(myQuery, updateGrid);
+            }
+
+            function showResults(myFeatures) {
+                console.log(myFeatures);
+                var s = "";
+                for (var i = 0, il = myFeatures.features.length; i < il; i++) {
+                    var featureAttributes = myFeatures.features[i].attributes;
+                    for (att in featureAttributes) {
+                        s = s + "<strong>" + att + ": </strong>" + featureAttributes[att] + "<br />";
+                    }
+                }
+                dojo.byId("info").innerHTML = s;
+            }
+
+            function updateGrid(featureSet) {
+                console.log("featureSet", featureSet);
+                var data = [];
+
+                array.forEach(featureSet.features, function(entry) {
+                    var logs = [],
+                        las = [],
+                        folders = [],
+                        relatedResource = entry.attributes.relatedresource === null ? "no value" : entry.attributes.relatedresource;
+
+                    var raw = relatedResource.split("|");
+                    raw.forEach(function(bit) {
+                        var resource = bit.split(", ");
+                        if (resource[0] && resource[1]) {
+                            var url = resource[1].trim();
+                            var name = resource[0].trim();
+                        }
+                        var anchor = "<li><a href='" + url + "' target='_blank'>" + name + "</a></li>";
+                        if (url != null) {
+                            if (url.indexOf(".tif", url.length - 4) !== -1) {
+                                logs.push(anchor);
+                            }
+                            if (url.indexOf(".pdf", url.length - 4) !== -1) {
+                                folders.push(anchor);
+                            }
+                            if (url.indexOf(".las", url.length - 4) !== -1) {
+                                las.push(anchor);
+                            }
+                        }
+                    });
+                    data.push({
+                        objectid: entry.attributes.objectid,
+                        apino: entry.attributes.apino,
+                        otherid: entry.attributes.otherid,
+                        wellname: entry.attributes.wellname,
+                        county: entry.attributes.county,
+                        twp: entry.attributes.twp,
+                        rge: entry.attributes.rge,
+                        section_: entry.attributes.section_,
+                        drillertotaldepth: entry.attributes.drillertotaldepth,
+                        formationtd: entry.attributes.formationtd,
+                        logField: '<ul>' + logs.join(" ") + '</ul>',
+                        lasField: '<ul>' + las.join(" ") + '</ul>',
+                        folderField: '<ul>' + folders.join(" ") + '</ul>'
+                    });
+                });
+                var dataForGrid = {
+                    items: data
+                };
+                //console.log(data);
+                var store = new Memory({
+                    data: dataForGrid,
+                    idProperty: "apiNo"
+                });
+                grid.setStore(store);
+            }
+        });
+    });
+</script>
+</head>
+<body class="tundra">
+ <div id="grid" style="margin:0; padding:0;"></div>
+</body>
+</html>
