@@ -18,8 +18,24 @@
     <script src="scripts/App2.js"></script>
 
 </head>
+<script>
+	function menuResize()
+	{
+		if (window.outerWidth < 800)
+		{
+			document.getElementById("titleImg").style.visibility = "hidden";
+			document.getElementById("navigationMenu li").style.visibility = "hidden";
+		}
+		else
+		{
+			document.getElementById("titleImg").style.visibility = "visible";
+			document.getElementById("navigationMenu li").style.visibility = "visible";
+		}
+	}
+  </script>
+  
+<body class="tundra" onresize="menuResize()">
 
-<body class="tundra">
 
 <div id="titleBar">
 <div id="titleText" class="mapMenus">
@@ -49,7 +65,7 @@
 	   data-dojo-props="region:'top'">
     <div id="info">
         <p>
-        <strong> Caution:</strong> This page is still in beta testing so some features may not work properly. Chrome, Safari, Firefox IE9 or greater are required to properly view this page.
+        <strong> Caution:</strong> This page is still in beta testing so some features may not work correctly. Chrome, Firefox, IE9 or newer or Safari are required to properly view this page.
     <br>
         <strong> Text Search:</strong> Complete one or multiple fields and press the Submit Search button to search for wells based on their attributes. Selecting LAS data will open the LAS data in a text file. The selected LAS data can be saved and downloaded by using the save page as function.
     </p>

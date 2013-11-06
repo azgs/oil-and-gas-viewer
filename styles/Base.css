@@ -44,9 +44,11 @@ body {
 
     border: 1px gray;
     padding:1px;
+	padding-left:230px;
     color: #feffff;
     text-align: center;
     z-index: 5;
+	
 }
 #navigationMenu li {
     display:inline;

@@ -46,6 +46,7 @@ html{
 
         border: 1px black;
         padding:1px;
+		padding-left:230px;
         color: #feffff;
         text-align: center;
         z-index: 5;
