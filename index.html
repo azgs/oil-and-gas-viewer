@@ -24,7 +24,16 @@
   <script>var dojoConfig = { parseOnLoad:true };</script>
   <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
   <script src="scripts/OilGasViewer.js"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-22695132-2', 'az.gov');
+  ga('send', 'pageview');
+
+  </script>
 
 </head>
 
@@ -76,7 +85,8 @@
 							<strong>Map Search:</strong> Press the Select Wells button and then draw a box around the area of interest.<br>
                             <strong>LAS Download:</strong> Clicking on the LAS data opens the LAS data as a text file, use the "Save Page As" function to save the file as a .las file.<br>
 							<strong>Overview Map:</strong> Click the arrow in the upper right corner to activate the map.<br>
-							<strong>Map Navigation:</strong> Use the mouse wheel to zoom in and out. Click and hold to pan.</p>
+							<strong>Map Navigation:</strong> Use the mouse wheel to zoom in and out. Click and hold to pan.<br>
+							<strong>Caution:</strong> Chrome, Safari, Firefox IE9 or greater are required to properly view this page.</p>
 		<button data-dojo-type="dijit.form.Button" onClick="selectionToolbar.activate(esri.toolbars.Draw.EXTENT);">Select Wells</button>
 		<button data-dojo-type="dijit.form.Button" onClick="wellFeatureLayer.clearSelection();">Clear Selection</button>
        <!-- <button data-dojo-type="dijit.form.Button" onClick="zoomExtent();">Full Extent</button>-->
