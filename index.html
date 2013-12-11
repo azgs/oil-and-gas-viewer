@@ -34,27 +34,10 @@
   ga('send', 'pageview');
 
   </script>
-  <script>
-	function menuResize()
-	{
-		if (window.outerWidth < 800)
-		{
-			document.getElementById("titleImg").style.visibility = "hidden";
-			document.getElementById("navigationMenu li").style.visibility = "hidden";
-		}
-		else
-		{
-			document.getElementById("titleImg").style.visibility = "visible";
-			document.getElementById("navigationMenu li").style.visibility = "visible";
-		}
-	}
-  </script>
 
 </head>
 
 <body class="tundra">
-
-<body onresize="menuResize()">
 
 <div id="titleBar">
 <div id="titleText" class="mapMenus">
@@ -90,9 +73,7 @@
   <div id="lefttPane"
 	   data-dojo-type="dijit.layout.ContentPane"
 	   data-dojo-props="region:'left'">
-	   <!--<span id="info" style="position:absolute; left:15px; bottom:2%; z-index:0;"></span>
 
-	   <!--<div id="scalebar" style="position:relative; left:1%; bottom:-95%;"></div>-->
 	
 	
 	
@@ -103,12 +84,10 @@
                             <strong>LAS Download:</strong> Clicking on the LAS data opens the LAS data as a text file, use the "Save Page As" function to save the file as a .las file.<br>
 							<strong>Overview Map:</strong> Click the arrow in the upper right corner to activate the map.<br>
 							<strong>Map Navigation:</strong> Use the mouse wheel to zoom in and out. Click and hold to pan.<br>
-							<strong>Caution:</strong> Chrome, Firefox, IE9 or newer or Safari are required to properly view this page.</p>
+							<strong>Caution:</strong> Chrome, Firefox, IE9 or greater, or Safari are required to properly view this page.</p>
 		<button data-dojo-type="dijit.form.Button" onClick="selectionToolbar.activate(esri.toolbars.Draw.EXTENT);">Select Wells</button>
 		<button data-dojo-type="dijit.form.Button" onClick="wellFeatureLayer.clearSelection();">Clear Selection</button>
-       <!-- <button data-dojo-type="dijit.form.Button" onClick="zoomExtent();">Full Extent</button>-->
-        <!--<button data-dogo-type="dijit.form.Button" onClick="apiSearch();">Search by API</button>
-        <input type="text" id="textSearch" placeholder="00-000-00000"/>-->
+
 	</div>
 	<span id="info" ></span>
 
@@ -130,7 +109,8 @@
             <tr>
 			  <th field="apino" width="auto">API No</th>
 			  <th field="otherid" width="auto">State Permit No</th>
-			  <th field="wellname" width="auto">Operator</th>
+              <th field="operator" width="auto">Operator</th>
+			  <th field="wellname" width="auto">Well Name</th>
 			  <th field="county" width="auto">County</th>
 			  <th field="twp" width="auto">Township</th>
 			  <th field="rge" width="auto">Range</th>

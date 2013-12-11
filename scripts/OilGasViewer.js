@@ -71,7 +71,7 @@
       });
 
 
-      wellFeatureLayer = new esri.layers.FeatureLayer("http://services.azgs.az.gov/ArcGIS/rest/services/baselayers/AZWellHeadersOilGasViewer/MapServer/0",{
+      wellFeatureLayer = new esri.layers.FeatureLayer("http://services.azgs.az.gov/ArcGIS/rest/services/baselayers/AZWellHeaders/MapServer/0",{
         mode: esri.layers.FeatureLayer.MODE_ONDEMAND, //data on demand
         infoTemplate: infoTemplate,
         outFields: ["*"]
