@@ -35,29 +35,10 @@ function(ObjectStore,
     myQueryTask = new QueryTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0");
     myQuery = new Query();
     myQuery.returnGeometry = false;
-    myQuery.outFields = ["apino","otherid","wellname","county","twp","rge","section_","drillertotaldepth","formationtd","field","relatedresource","welltype"];
+    myQuery.outFields = ["apino","otherid","wellname","operator","county","twp","rge","section_","drillertotaldepth","formationtd","field","relatedresource","welltype"];
 
 
-/*function runQuery(){
-    //myQuery.text = dom.byId("twpid").value;
-    var apiNo = dom.byId('apinum').value;
-    var otherId = dom.byId('stateperm').value;
-    var wellName = dom.byId('wellnameid');
-    var county = dom.byId('countyid');
-    var twp = dom.byId('twpid');
-    var rge = dom.byId('rgeid');
-    var section = dom.byId('sectionid');
-    var drillerDepth = dom.byId('depthid');
-    var formation = dom.byId('formationtdid');
-    var field = dom.byId('fieldid');
 
-    myQuery.where ="apino like '%" + apiNo + "%'" + " OR " + "otherid like '%" + otherId + "%'";
-    //myQuery.where ="apino like '%" + 02- + "%'" + " AND " + "otherid like '%" + otherId + "%'";  definintion query?
-//console.log(myQuery);
-    //apino otherid wellname county twp rge section_ drillertotaldepth formationtd field
-    myQueryTask.execute(myQuery,updateGrid);
-
-}*/
 
         function apiQuery(){
             var apiNo = dom.byId('apinum').value;
@@ -167,6 +148,7 @@ function updateGrid(featureSet){
                 apino:entry.attributes.apino,//1
                 otherid:entry.attributes.otherid,//2
                 wellname:entry.attributes.wellname,//3
+                operator:entry.attributes.operator,
                 county:entry.attributes.county,//4
                 twp:entry.attributes.twp,//5
                 rge:entry.attributes.rge,//6

@@ -18,24 +18,8 @@
     <script src="scripts/App2.js"></script>
 
 </head>
-<script>
-	function menuResize()
-	{
-		if (window.outerWidth < 800)
-		{
-			document.getElementById("titleImg").style.visibility = "hidden";
-			document.getElementById("navigationMenu li").style.visibility = "hidden";
-		}
-		else
-		{
-			document.getElementById("titleImg").style.visibility = "visible";
-			document.getElementById("navigationMenu li").style.visibility = "visible";
-		}
-	}
-  </script>
-  
-<body class="tundra" onresize="menuResize()">
 
+<body class="tundra">
 
 <div id="titleBar">
 <div id="titleText" class="mapMenus">
@@ -65,9 +49,9 @@
 	   data-dojo-props="region:'top'">
     <div id="info">
         <p>
-        <strong> Caution:</strong> This page is still in beta testing so some features may not work correctly. Chrome, Firefox, IE9 or newer or Safari are required to properly view this page.
+        <strong> Caution:</strong> This page is still in beta testing so some features may not work properly. Chrome, Firefox, IE9 or greater, or Safari are required to properly view this page.
     <br>
-        <strong> Text Search:</strong> Complete one or multiple fields and press the Submit Search button to search for wells based on their attributes. Selecting LAS data will open the LAS data in a text file. The selected LAS data can be saved and downloaded by using the save page as function.
+        <strong> Text Search:</strong> Complete a field and press a Search by button to search for wells based on that attribute. Selecting LAS data will open the LAS data in a text file. The selected LAS data can be saved and downloaded by using the save page as function.
     </p>
         </div>
     </div>
@@ -77,9 +61,7 @@
 	   data-dojo-props="region:'right'">
      <p>Map of Arizona State Meridians</p>
     <img src="photos/Arizona_Meridians_Labled.jpg" height="385" width="350">
-        <!--<div id="img_info">
-            <p>Map of Arizona State Meridians</p>
-        </div>-->
+
 
 </div>
 
@@ -116,7 +98,7 @@
                 <label for="stateperm"> State Permit</label>
             </td>
             <td>
-                <input type="text" name="otherid" id="stateperm" size="15" maxlength="4" placeholder="0000"><br>
+                <input type="text" name="otherid" id="stateperm" size="15" maxlength="6" placeholder="0000"><br>
             </td>
         </tr>
 		<tr>
@@ -220,7 +202,6 @@
                     <option value="Willcox">Willcox</option>
                     <option value="Yuma">Yuma</option>
                 </select>
-                <!--<input type="text" name="field" id="fieldid" size="30" maxlength="30"><br>-->
             </td>
         </tr>
 		<tr>
@@ -367,12 +348,13 @@
 <div id="outGrid"
     data-dojo-type="dijit/layout/ContentPane"
     data-dojo-props="region: 'bottom'">
-    <!-- https://developers.arcgis.com/en/javascript/jssamples/fl_paging.html -->
+
     <table data-dojo-type="dojox/grid/DataGrid" escapeHTMLInData="false" jsid="grid" id="grid" data-dojo-props="rowsPerPage:'5', rowSelector:'20px'" style="width:100%">
         <thead>
         <tr>
             <th field="apino" width="auto">API No</th>
             <th field="otherid" width="auto">State Permit No</th>
+            <th field="operator" width="auto">Operator</th>
             <th field="wellname" width="auto">Well Name</th>
             <th field="county" width="auto">County</th>
             <th field="twp" width="auto">Township</th>

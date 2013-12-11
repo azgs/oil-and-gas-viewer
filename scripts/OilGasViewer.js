@@ -28,7 +28,7 @@
       map.on("load", function(){
           //after map loads, connect to listen to mouse move & drag events
           map.on("mouse-move", showCoordinates);
-         // map.on("mouse-drag", showCoordinates);
+
 
         });
 
@@ -53,7 +53,8 @@
       //Popup window settings
       var content = "<b>API Number</b>: ${apino}"  +
                     "<br><b>State Permit Number</b>: ${otherid}"  +
-                    "<br><b>Operator</b>: ${wellname}" +
+                    "<br><b>Well Name</b>: ${wellname}" +
+                    "<br><b>Operator</b>: ${operator}" +
                     "<br><b>County</b>: ${county}" +
                     "<br><b>Township-Range, Section </b>: T${twp}-R${rge}, Sec. ${section_}" +
                     "<br><b>Total Depth</b>: ${drillertotaldepth} ft" +
@@ -70,7 +71,7 @@
       });
 
 
-      wellFeatureLayer = new esri.layers.FeatureLayer("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer/0",{
+      wellFeatureLayer = new esri.layers.FeatureLayer("http://services.azgs.az.gov/ArcGIS/rest/services/baselayers/AZWellHeadersOilGasViewer/MapServer/0",{
         mode: esri.layers.FeatureLayer.MODE_ONDEMAND, //data on demand
         infoTemplate: infoTemplate,
         outFields: ["*"]
@@ -101,16 +102,16 @@
       dojo.connect(map, "onLoad", initSelectToolbar);
 
 
-     //findTask = new esri.tasks.FindTask(wellFeatureLayer);
+
     findTask = new esri.tasks.FindTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer");
 
-      //dojo.connect(map, "onLoad", function() {
+
     findParams = new esri.tasks.FindParameters();
     findParams.returnGeometry = true;
     findParams.layerIds = [0];
     findParams.searchFields = ["apino"];
     findParams.outSpatialReference = map.spatialReference;
-    //});
+
 
     }
 
@@ -219,7 +220,7 @@
         //map.graphics.clear();
         var resultSym = new esri.symbol.SimpleMarkerSymbol().setColor("blue");
     }*/
-
+//Text search on the map
     /*function apiSearch(){
         //var selectionSymbol = new esri.symbol.SimpleMarkerSymbol().setColor("red");
         findParams.searchText = dojo.byId("textSearch").value;
@@ -266,7 +267,8 @@
                 objectid:entry.attributes.objectid,//0
                 apino:entry.attributes.apino,//1
                 otherid:entry.attributes.otherid,//2
-                wellname:entry.attributes.wellname,//3
+                wellname:entry.attributes.wellname,
+                operator:entry.attributes.operator,//3
                 county:entry.attributes.county,//4
                 twp:entry.attributes.twp,//5
                 rge:entry.attributes.rge,//6
@@ -285,14 +287,14 @@
         var store = new dojo.data.ItemFileReadStore({data:dataForGrid});
         grid.setStore(store);
     }
-
+    //Zoom to Points
     function makeZoomButton(id){//id is objectid
         var zBtn = "<div data-dojo-type='dijit.form.Button'><img src='photos/bg_magnify.png'";
         zBtn = zBtn + " width='18' height='18'";
         zBtn = zBtn + " onClick=\"zoomRow('"+id+"')\"></div>"; //activates zoomRow function
         return zBtn;
       }
-
+    //Zoom to points
     function zoomRow(id){
         var grid = dijit.byId('grid');
         var clickedWell = grid.getItem(id);
@@ -323,6 +325,7 @@
     }
 
 /*
+    //Zoom to points
     function zoomRow(id) {
         //console.log(id);
         var distance = 500;
