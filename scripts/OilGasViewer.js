@@ -102,10 +102,10 @@
       dojo.connect(map, "onLoad", initSelectToolbar);
 
 
-
+//Text Search
     findTask = new esri.tasks.FindTask("http://services.azgs.az.gov/ArcGIS/rest/services/aasggeothermal/AZWellHeaders/MapServer");
 
-
+//Text Search
     findParams = new esri.tasks.FindParameters();
     findParams.returnGeometry = true;
     findParams.layerIds = [0];
@@ -114,7 +114,7 @@
 
 
     }
-
+//info window
     function lasInfo(data){
         var lasData = [];
         var lasRR = data === null ? "no value" : data;
@@ -140,7 +140,7 @@
         });
     return lasData;
     }
-
+//info window
     function folderInfo(data){
         var folderData = [];
         var folderRR = data === null ? "no value" : data;
@@ -166,7 +166,7 @@
         });
     return folderData;
     }
-
+//info window
     function logInfo(data){
         var logData = [];
         var logRR = data === null ? "no value" : data;
