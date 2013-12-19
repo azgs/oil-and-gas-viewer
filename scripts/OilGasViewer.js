@@ -216,6 +216,7 @@
       });
     }
 
+    //Text Search Results
     /*function showResults(results){
         //map.graphics.clear();
         var resultSym = new esri.symbol.SimpleMarkerSymbol().setColor("blue");
