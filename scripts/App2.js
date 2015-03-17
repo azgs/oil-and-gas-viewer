@@ -82,7 +82,7 @@ function(ObjectStore,
         }
         function wellNaQuery(){
             var wellName = dom.byId('wellnameid').value;
-            myQuery.where ="wellname like '%" + wellName + "%'" + " AND " +"apino like '02-%'";
+            myQuery.where ="Lower(wellname) like '%" + wellName.toLowerCase() + "%'" + " AND " +"apino like '02-%'";
             myQueryTask.execute(myQuery,updateGrid);
         }
         function depthQuery(){
