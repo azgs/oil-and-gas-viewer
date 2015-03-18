@@ -77,7 +77,7 @@ function(ObjectStore,
         }
         function operQuery(){
             var operator = dom.byId('operatorid').value;
-            myQuery.where ="operator like '%" + operator + "%'" + " AND " +"apino like '02-%'";
+            myQuery.where ="Lower(operator) like '%" + operator.toLowerCase() + "%'" + " AND " +"apino like '02-%'";
             myQueryTask.execute(myQuery,updateGrid);
         }
         function wellNaQuery(){
@@ -92,7 +92,7 @@ function(ObjectStore,
         }
         function formQuery(){
             var formation = dom.byId('formationtdid').value;
-            myQuery.where ="formationtd like '%" + formation + "%'" + " AND " +"apino like '02-%'";
+            myQuery.where ="Lower(formationtd) like '%" + formation.toLowerCase() + "%'" + " AND " +"apino like '02-%'";
             myQueryTask.execute(myQuery,updateGrid);
         }
 
